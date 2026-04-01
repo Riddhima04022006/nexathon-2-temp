@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+, "components/DeathStar.jsx", "components/TextRing.jsx", "components/hooks/useScrollVideo.ts", "components/Navigation.jsx", "components/TargetCursor/TargetCursor.jsx"  ],
   "exclude": ["node_modules"]
 }
