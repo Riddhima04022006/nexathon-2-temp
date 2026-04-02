@@ -127,7 +127,6 @@ function DottedGlobeInner({ hovered }: { hovered: boolean }) {
 
 function WireGlobe({ isMobile }: { isMobile: boolean }) {
   const [hovered, setHovered] = useState(false);
-  // Scale down the globe container for mobile
   const size = isMobile ? "180px" : "230px";
   
   return (
@@ -180,6 +179,9 @@ export default function NexaMenu(props: any) {
 
   return (
     <>
+    <style>
+      {`*{overflow:hidden}`}
+    </style>
       <div style={{ position: "fixed", top: isMobile ? "1rem" : "2rem", right: isMobile ? "1rem" : "2rem", zIndex: 99998}}>
         <AnimatePresence>
           {!visible && (
@@ -189,7 +191,7 @@ export default function NexaMenu(props: any) {
               exit={{ opacity: 0, scale: 0.8 }}
               onClick={() => setVisible(true)}
               style={{
-                background: "rgba(0, 0, 0, 0.6)",
+                background: isMobile ? "rgba(15, 15, 15, 1)" : "rgba(0, 0, 0, 0.6)",
                 border: "1px solid rgba(255,255,255,0.2)",
                 color: "#fff",
                 padding: "0.8rem 1.5rem",
@@ -198,18 +200,18 @@ export default function NexaMenu(props: any) {
                 fontFamily: "'DM Mono', monospace",
                 fontSize: "12px",
                 letterSpacing: "0.2em",
-                backdropFilter: "blur(10px)",
+                backdropFilter: isMobile ? "none" : "blur(10px)",
                 display: "flex",
                 alignItems: "center",
                 gap: "8px",
                 transition: "all 0.3s ease",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = "rgba(40,40,40,0.8)";
+                e.currentTarget.style.background = isMobile ? "rgba(30, 30, 30, 1)" : "rgba(40,40,40,0.8)";
                 e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = "rgba(0, 0, 0, 0.6)";
+                e.currentTarget.style.background = isMobile ? "rgba(15, 15, 15, 1)" : "rgba(0, 0, 0, 0.6)";
                 e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
               }}
             >
@@ -236,8 +238,7 @@ export default function NexaMenu(props: any) {
               zIndex: 99999,
               background: `radial-gradient(ellipse at center, rgba(${rgbStr},0.15) 0%, rgba(0,0,0,0.95) 100%)`,
               display: "flex",
-              // Switch to column on mobile, allow scrolling if screen is too short
-              flexDirection: isMobile ? "column" : "row",
+              flexDirection: isMobile ? "column-reverse" : "row",
               alignItems: isMobile ? "center" : "stretch",
               justifyContent: isMobile ? "flex-start" : "space-between",
               fontFamily: "'Courier New', 'Lucida Console', monospace",
@@ -245,7 +246,7 @@ export default function NexaMenu(props: any) {
               overflowX: "hidden",
             }}
           >
-            {/* Background elements (Kept identical) */}
+            {/* Background elements */}
             <div
               style={{
                 position: "fixed",
@@ -285,13 +286,11 @@ export default function NexaMenu(props: any) {
               exit={{ x: isMobile ? 0 : "-100%", y: isMobile ? -50 : 0, opacity: 0 }}
               transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
               style={{
-                // Auto height and full width on mobile
                 flex: isMobile ? "none" : "0 0 350px",
                 width: isMobile ? "100%" : "auto",
-                background: `linear-gradient(135deg, rgba(${rgbStr},0.1) 0%, rgba(5,5,5,0.8) 100%)`,
-                backdropFilter: "blur(24px) saturate(1)",
-                WebkitBackdropFilter: "blur(24px) saturate(1)",
-                // Adjust borders and padding for mobile
+                background: isMobile ? "#050505" : `linear-gradient(135deg, rgba(${rgbStr},0.1) 0%, rgba(5,5,5,0.8) 100%)`,
+                backdropFilter: isMobile ? "none" : "blur(24px) saturate(1)",
+                WebkitBackdropFilter: isMobile ? "none" : "blur(24px) saturate(1)",
                 borderRight: isMobile ? "none" : "1px solid rgba(255, 255, 255, 0.15)",
                 borderBottom: isMobile ? "1px solid rgba(255, 255, 255, 0.15)" : "none",
                 borderLeft: isMobile ? "none" : "1px solid rgba(255, 255, 255, 0.15)",
@@ -401,7 +400,7 @@ export default function NexaMenu(props: any) {
               style={{
                 flex: isMobile ? "1" : "0 0 450px",
                 width: isMobile ? "100%" : "auto",
-                background: `linear-gradient(to bottom right, rgba(${rgbStr},0.05), rgba(10, 10, 10, 0.85) 40%)`,
+                background: isMobile ? "#0a0a0a" : `linear-gradient(to bottom right, rgba(${rgbStr},0.05), rgba(10, 10, 10, 0.85) 40%)`,
                 borderLeft: isMobile ? "none" : "1px solid rgba(255, 255, 255, 0.15)",
                 padding: isMobile ? "2rem 1.5rem 4rem 1.5rem" : "3rem 4rem",
                 display: "flex",
@@ -502,7 +501,7 @@ export default function NexaMenu(props: any) {
                 <button
                   style={{
                     width: "100%",
-                    background: "rgba(255,255,255,0.1)",
+                    background: isMobile ? "rgba(20,20,20,1)" : "rgba(255,255,255,0.1)",
                     border: "1px solid rgba(255,255,255,0.2)",
                     color: "rgba(255,255,255,1)",
                     fontSize: "12px",
@@ -511,14 +510,14 @@ export default function NexaMenu(props: any) {
                     cursor: "pointer",
                     textTransform: "uppercase",
                     transition: "all 0.3s ease",
-                    backdropFilter: "blur(10px)",
+                    backdropFilter: isMobile ? "none" : "blur(10px)",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "rgba(255,255,255,0.2)";
+                    e.currentTarget.style.background = isMobile ? "rgba(30,30,30,1)" : "rgba(255,255,255,0.2)";
                     e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)";
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "rgba(255,255,255,0.1)";
+                    e.currentTarget.style.background = isMobile ? "rgba(20,20,20,1)" : "rgba(255,255,255,0.1)";
                     e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
                   }}
                   onClick={() => {
