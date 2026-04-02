@@ -149,6 +149,13 @@ export default function NexaMenu(props: any) {
   const [visible, setVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [themeColor, setThemeColor] = useState("#ffffff");
+  
+  const [toast, setToast] = useState({ show: false, message: "" });
+  const showToast = (msg: string) => {
+    setToast({ show: true, message: msg });
+    setTimeout(() => setToast({ show: false, message: "" }), 2800);
+  };
+
   const router = useRouter();
 
   const rgbStr = useMemo(() => {
@@ -157,10 +164,9 @@ export default function NexaMenu(props: any) {
     return `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`;
   }, [themeColor]);
 
-  // Responsive Hook
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
-    handleResize(); // Initial check
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -246,7 +252,35 @@ export default function NexaMenu(props: any) {
               overflowX: "hidden",
             }}
           >
-            {/* Background elements */}
+            <AnimatePresence>
+              {toast.show && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20, x: "-50%" }}
+                  animate={{ opacity: 1, y: 0, x: "-50%" }}
+                  exit={{ opacity: 0, y: 15, x: "-50%" }}
+                  style={{
+                    position: "fixed",
+                    bottom: isMobile ? "80px" : "44px",
+                    left: "50%",
+                    zIndex: 100001,
+                    background: "rgba(15, 15, 15, 0.8)",
+                    border: "1px solid rgba(255, 255, 255, 0.2)",
+                    color: "#fff",
+                    fontSize: "0.8rem",
+                    fontFamily: "'DM Mono', 'Courier New', monospace",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    padding: "14px 36px",
+                    whiteSpace: "nowrap",
+                    backdropFilter: "blur(10px)",
+                    pointerEvents: "none",
+                  }}
+                >
+                  {toast.message}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <div
               style={{
                 position: "fixed",
@@ -370,6 +404,7 @@ export default function NexaMenu(props: any) {
                     style={{ cursor: "pointer", transition: "color 0.2s" }}
                     onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.9)")}
                     onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.3)")}
+                    onClick={() => showToast(`${link} details are not open yet`)}
                   >
                     {link}
                   </span>
@@ -398,7 +433,7 @@ export default function NexaMenu(props: any) {
               exit={{ x: isMobile ? 0 : "100%", y: isMobile ? 50 : 0, opacity: 0 }}
               transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
               style={{
-                flex: isMobile ? "1" : "0 0 450px",
+                flex: isMobile ? "none" : "0 0 450px", // Changed to none to prevent being squashed
                 width: isMobile ? "100%" : "auto",
                 background: isMobile ? "#0a0a0a" : `linear-gradient(to bottom right, rgba(${rgbStr},0.05), rgba(10, 10, 10, 0.85) 40%)`,
                 borderLeft: isMobile ? "none" : "1px solid rgba(255, 255, 255, 0.15)",
@@ -408,7 +443,7 @@ export default function NexaMenu(props: any) {
                 justifyContent: "space-between",
                 position: "relative",
                 zIndex: 20,
-                minHeight: isMobile ? "50vh" : "auto"
+                minHeight: isMobile ? "auto" : "auto"
               }}
             >
               <div style={{ alignSelf: "flex-end", display: "flex", alignItems: "center", gap: "2rem", marginBottom: isMobile ? "2rem" : "0" }}>
@@ -433,7 +468,7 @@ export default function NexaMenu(props: any) {
                 </button>
               </div>
 
-              <nav style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", gap: isMobile ? "1rem" : "1.5rem" }}>
+              <nav style={{ flex: isMobile ? "none" : 1, display: "flex", flexDirection: "column", justifyContent: "center", gap: isMobile ? "1rem" : "1.5rem" }}>
                 {menuItems.map((item, i) => {
                   const isActive = activeItem === item.id;
                   const isHovered = hoveredItem === item.id;
