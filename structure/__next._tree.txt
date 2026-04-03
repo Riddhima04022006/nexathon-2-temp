@@ -1,0 +1,9 @@
+:HL["/nexathon-2-temp/_next/static/chunks/05witqzpgblyb.css","style"]
+:HL["/nexathon-2-temp/_next/static/media/0c795a286deabae8-s.p.14tvuu96~wkr0.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/nexathon-2-temp/_next/static/media/2293d94da4a039c8-s.p.02usqbcb6p~co.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/nexathon-2-temp/_next/static/media/36363bfb06833f56-s.p.0-pny06~-x26a.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/nexathon-2-temp/_next/static/media/Ethnocentric_Regular-s.p.16q0jubm9vv23.otf","font",{"crossOrigin":"","type":"font/otf"}]
+:HL["/nexathon-2-temp/_next/static/media/Orbitronio-s.p.16ruloukqxaal.ttf","font",{"crossOrigin":"","type":"font/ttf"}]
+:HL["/nexathon-2-temp/_next/static/media/fabcf92ba1ccea36-s.p.0lwj123ije5i..woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/nexathon-2-temp/_next/static/media/fed68dff3ca987ed-s.p.0.dtn51pl2xyp.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+0:{"tree":{"name":"","param":null,"prefetchHints":20,"slots":{"children":{"name":"structure","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"gKjMt-WszHU2R2wLQOXm1"}
