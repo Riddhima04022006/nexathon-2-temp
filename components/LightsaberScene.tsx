@@ -50,8 +50,8 @@ function makeSaber(): Saber {
   const group = new THREE.Group();
   const ic    = new THREE.Color(0xffffff);
 
-  const hM = new THREE.MeshStandardMaterial({ color: 0x999999, metalness: 0.95, roughness: 0.14 });
-  const rM = new THREE.MeshStandardMaterial({ color: 0x282828, metalness: 0.85, roughness: 0.28 });
+  const hM = new THREE.MeshStandardMaterial({ color: 0xb0a898, metalness: 0.90, roughness: 0.20 });
+  const rM = new THREE.MeshStandardMaterial({ color: 0x1e1e22, metalness: 0.80, roughness: 0.35 });
 
   // Grip
   group.add(new THREE.Mesh(new THREE.CylinderGeometry(0.115, 0.14, 1.35, 28), hM));
@@ -243,10 +243,13 @@ export default function LightsaberScene() {
     scene.add(saberR.group);
 
     // Lights
-    scene.add(new THREE.AmbientLight(0x080812, 1));
+    scene.add(new THREE.AmbientLight(0x1a1820, 2.2));
     const dL = new THREE.DirectionalLight(0xffffff, 0.4);
     dL.position.set(4, 6, 5);
     scene.add(dL);
+    const rimL = new THREE.DirectionalLight(0x8899cc, 0.55);
+    rimL.position.set(-5, 2, -6);
+    scene.add(rimL);
 
     const clock      = new THREE.Clock();
     const overlayEl  = overlayRef.current;
@@ -280,7 +283,7 @@ export default function LightsaberScene() {
       // X formation — mobile: smaller scale, shallower angle
       const isMobile = window.innerWidth < 768;
       const drama    = Math.abs(p - 0.5) * 2;
-      const angle    = lerp(isMobile ? 0.58 : 0.82, isMobile ? 0.70 : 0.96, drama);
+      const angle    = lerp(isMobile ? 0.58 : 0.82, isMobile ? 0.70 : 1.1, drama);
       const hSpread  = lerp(isMobile ? 0.58 : 0.85, isMobile ? 0.78 : 1.1,  drama);
       const hiltY    = lerp(isMobile ? -4.8 : -1.5, isMobile ? -5.2 : -1.8, drama);
       const bob      = Math.sin(t * 0.45) * 0.035;
