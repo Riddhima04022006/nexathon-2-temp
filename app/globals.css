@@ -144,8 +144,6 @@
   /* For Firefox */
   scrollbar-width: none;
   
-  /* Ensure scrolling is still active */
-  overflow-y: scroll; 
 }
 
 /* Restore default cursor on mobile / touch devices */
