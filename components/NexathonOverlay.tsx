@@ -4,13 +4,11 @@ const Scroll = dynamic(
   () => import("@react-three/drei").then(mod => mod.Scroll),
   { ssr: false } 
 );
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useState, useRef, useEffect } from 'react';
-import { syne, orbitronio, infiniteBeyond } from '../app/layout';
+import { useState } from 'react';
 import Image from "next/image";
 
-// Original Assets
 import Bhuwan from "../app/(main)/nexathon/assets/Icon_Bhuwan.png";
 import Devit from "../app/(main)/nexathon/assets/Icon_Devit.png";
 import Dheeraj from "../app/(main)/nexathon/assets/Icon_Dheeraj.png";
@@ -43,91 +41,66 @@ const team = [
 
 export default function NexathonOverlay() {
   const router = useRouter();
-  const [dragWidth, setDragWidth] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [activeToast, setActiveToast] = useState<{ id: string; message: string } | null>(null);
 
-  useEffect(() => {
-    const calculateWidth = () => {
-      if (scrollRef.current && containerRef.current) {
-        // We force a recalculation of the true scrollable area
-        const totalWidth = scrollRef.current.scrollWidth;
-        const visibleWidth = containerRef.current.offsetWidth;
-        setDragWidth(totalWidth - visibleWidth);
-      }
-    };
+  const triggerToast = (id: string, msg: string) => {
+    setActiveToast({ id, message: msg });
+    setTimeout(() => setActiveToast(null), 3000);
+  };
 
-    // Run immediately and after a delay to catch image rendering
-    calculateWidth();
-    const timer = setTimeout(calculateWidth, 1000);
-    window.addEventListener('resize', calculateWidth);
-
-    return () => {
-      window.removeEventListener('resize', calculateWidth);
-      clearTimeout(timer);
-    };
-  }, []);
-
-  const [toast, setToast] = useState({ show: false, message: "" });
-  
   return typeof window !== "undefined" ? (
-  <Scroll html style={{ width: '100vw' }}>
-      
+    <Scroll html style={{ width: '100vw' }}>
       <style>{`
-        .responsive-page {
-          width: 100vw;
-          height: 100vh;
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
-          padding: 1.5rem 9vw;
-          box-sizing: border-box;
-        }
-
-        .responsive-card {
-          max-width: 680px;
-          width: 100%;
-          background: rgba(255, 255, 255, 0.03);
+        .toast-popup {
+          position: absolute;
+          background: rgba(0, 0, 0, 0.95);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: white;
+          font-size: 0.7rem;
+          font-family: "DM Mono", monospace;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          padding: 10px 18px;
+          white-space: nowrap;
           backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          padding: clamp(1.5rem, 5vw, 3rem);
-          border-radius: 1.5rem;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-          text-align: left;
-          box-sizing: border-box;
+          border-radius: 6px;
+          z-index: 200;
+          box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+          pointer-events: none;
         }
 
-        .massive-heading {
-          font-family: var(--font-infinite-beyond), sans-serif;
-          font-size: clamp(2.5rem, 5vw, 6.5rem);
-          color: #fff;
-          line-height: 1;
-          letter-spacing: 0.0em;
-          margin-bottom: 1.25rem;
-          overflow-wrap: break-word;
+        @media (min-width: 769px) {
+          .toast-popup {
+            left: calc(100% + 15px);
+            top: 50%;
+            transform: translateY(-50%);
+          }
         }
+
+        @media (max-width: 768px) { 
+          .toast-popup { 
+            left: 50% !important;
+            top: calc(100% + 20px) !important;
+            transform: translateX(-50%) !important;
+            width: max-content;
+            max-width: 85vw;
+            white-space: normal;
+            text-align: center;
+          }
+          .btn-container {
+            display: flex !important;
+            justify-content: center !important;
+            width: 100%;
+          }
+        }
+
+        .responsive-page { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: flex-start; padding: 1.5rem 9vw; box-sizing: border-box; pointer-events: none; }
+        .responsive-card { max-width: 680px; width: 100%; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); padding: clamp(1.5rem, 5vw, 3rem); border-radius: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.1); text-align: left; position: relative; z-index: 10; pointer-events: auto; }
+        .massive-heading { font-family: var(--font-infinite-beyond), sans-serif; font-size: clamp(2.5rem, 5vw, 6.5rem); color: #fff; line-height: 1; margin-bottom: 1.25rem; }
         
-        @media (max-width: 768px) {
-          .responsive-page { justify-content: center; padding: 1rem; }
-          .responsive-card { text-align: center; max-width: calc(100vw - 2rem); background: transparent; border: none; border-radius: 0; }
-          .massive-heading { font-size: clamp(1.8rem, 10vw, 3rem); }
-        }
-
-        .sponsor-track {
-          display: flex;
-          gap: 0.75rem;
-          width: max-content;
-          animation: loop-sponsors 40s linear infinite;
-        }
-
-        .sponsor-track:hover { animation-play-state: paused; }
-
-        @keyframes loop-sponsors {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(calc(-50% - 0.375rem)); }
-        }
-
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
         .img-wrapper img {
           object-fit: cover;
           filter: grayscale(100%);
@@ -138,120 +111,93 @@ export default function NexathonOverlay() {
           filter: grayscale(0%) !important;
           transform: scale(1.08);
         }
+
+        .sponsor-track { display: flex; gap: 0.75rem; width: max-content; animation: loop-sponsors 40s linear infinite; }
+        @keyframes loop-sponsors { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-50% - 0.375rem)); } }
       `}</style>
 
-      {/* Page 1 — Restored */}
       <div className="responsive-page">
-        <motion.div
-          initial={{ opacity: 0, x: -60 }} whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.3 }}
-          className="responsive-card"
-        >
+        <motion.div initial={{ opacity: 0, x: -60 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 1 }} className="responsive-card">
           <p style={{ fontFamily: '"DM Mono", monospace', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.35em', textTransform: 'uppercase', fontSize: '10px', marginBottom: '1rem' }}>MISSION BRIEF</p>
           <h1 className="massive-heading">What is<br/>Nexathon</h1>
-          <h2 className="mb-2" style={{fontFamily: '"DM Mono", monospace', color: 'white'}}>THE ULTIMATE CONVERGENCE</h2>
-          <p style={{ fontFamily: '"DM Mono", monospace', color: 'rgba(209,213,219,1)', fontSize: 'clamp(0.8rem, 2vw, 1rem)', lineHeight: 1.5 }}>
-            Nexathon is an interstellar journey where innovators push the boundaries of the digital universe. More than a hackathon, it is a high-intensity engineering launchpad designed to ignite ideas, build stellar projects, and accelerate the future. Whether you are a lone rebel or part of a fleet, this is where your code becomes legendary.
+          <h2 className="mb-2" style={{fontFamily: '"DM Mono", monospace', color: 'white', fontSize: '1.2rem'}}>THE ULTIMATE CONVERGENCE</h2>
+          <p style={{ fontFamily: '"DM Mono", monospace', color: 'rgba(209,213,219,1)', fontSize: 'clamp(0.85rem, 2vw, 1rem)', lineHeight: 1.6, marginBottom: '2rem' }}>
+            Nexathon is an interstellar journey where innovators push the boundaries of the digital universe. More than a hackathon, it is a high-intensity engineering launchpad designed to ignite ideas, build stellar projects, and accelerate the future.
           </p>
-          <br />
-          <button style={{ fontFamily: '"DM Mono", monospace', padding: '1rem 3rem', background: '#fff', color: '#000', fontSize: 'clamp(10px, 2vw, 13px)', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', border: 'none', borderRadius: '100px', cursor: 'pointer', boxShadow: '0 0 30px rgba(255,255,255,0.25)', marginTop: '1rem' }}
-            onClick={() => alert("Registration isn't open yet")}
-          >Register Now</button>
+
+          <div className="btn-container" style={{ position: 'relative', display: 'inline-block' }}>
+            <button 
+              style={{ fontFamily: '"DM Mono", monospace', padding: '1rem 3rem', background: '#fff', color: '#000', fontSize: '12px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', border: 'none', borderRadius: '100px', cursor: 'pointer' }}
+              onClick={() => triggerToast('reg', "Registration isn't open yet")}
+            >Register Now</button>
+            <AnimatePresence>
+              {activeToast?.id === 'reg' && (
+                <motion.div 
+                   initial={{ opacity: 0, scale: 0.9 }} 
+                   animate={{ opacity: 1, scale: 1 }} 
+                   exit={{ opacity: 0, scale: 0.9 }} 
+                   className="toast-popup"
+                >
+                  {activeToast.message}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </motion.div>
       </div>
 
-      {/* Page 2 — Team (RESTORED & FIXED) */}
       <div className="responsive-page">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9 }} viewport={{ margin: '-80px' }}
-          className="responsive-card"
-        >
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.9 }} className="responsive-card">
           <p style={{ fontFamily: '"DM Mono", monospace', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.35em', textTransform: 'uppercase', fontSize: '10px', marginBottom: '1rem' }}>THE CREW</p>
           <h2 className="massive-heading">Meet Our Team</h2>
-          
-          <div ref={containerRef} style={{ width: '100%', overflow: 'hidden', borderRadius: '0.75rem', position: 'relative' }}>
-                <motion.div
-                  ref={scrollRef}
-                  drag="x"
-                  dragConstraints={{ right: 0, left: -dragWidth }}
-                  style={{ display: 'flex', gap: '0.75rem', width: 'max-content', cursor: 'grab' }}
-                  whileTap={{ cursor: 'grabbing' }}
-                >
+          <div className="no-scrollbar" onPointerDown={(e) => e.stopPropagation()} style={{ width: '100%', overflowX: 'auto', position: 'relative' }}>
+            <div style={{ display: 'flex', gap: '0.75rem', width: 'max-content', paddingBottom: '10px' }}>
                 {team.map((member, i) => (
-                <div
-                  key={i}
-                  className="team-card"
-                  style={{
-                    width: 'clamp(160px, 36vw, 240px)',
-                    height: 'clamp(200px, 30vw, 280px)',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    borderRadius: '0.75rem',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    overflow: 'hidden',
-                    flexShrink: 0,
-                  }}
-                >
-                  <div style={{ width: '100%', height: '75%', position: 'relative', overflow: 'hidden' }} className="img-wrapper">
+                <div key={i} className="team-card" style={{ width: '200px', height: '260px', background: 'rgba(255, 255, 255, 0.05)', borderRadius: '0.75rem', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', overflow: 'hidden', flexShrink: 0 }}>
+                  <div style={{ width: '100%', height: '75%', position: 'relative' }} className="img-wrapper">
                       <Image src={member.img} alt={member.name} fill draggable={false} />
                   </div>
-                  <span style={{ fontFamily: '"DM Mono", monospace', color: '#fff', fontSize: '11px', marginTop: '0.4rem', textAlign: 'center', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                    {member.name}
-                  </span>
-                  <span style={{ fontFamily: '"DM Mono", monospace', color: '#ff3b3b', fontSize: '9px', textAlign: 'center', marginBottom: '0.4rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                    {member.role}
-                  </span>
+                  <span style={{ fontFamily: '"DM Mono", monospace', color: '#fff', fontSize: '11px', marginTop: '0.4rem', textAlign: 'center' }}>{member.name}</span>
+                  <span style={{ fontFamily: '"DM Mono", monospace', color: '#ff3b3b', fontSize: '9px', textAlign: 'center' }}>{member.role}</span>
                 </div>
               ))}
-            </motion.div>
+            </div>
           </div>
-          <p style={{ fontFamily: '"DM Mono", monospace', color: 'rgba(255,255,255,0.25)', fontSize: '9px', letterSpacing: '0.25em', textTransform: 'uppercase', marginTop: '1rem' }}>← Drag to explore →</p>
         </motion.div>
       </div>
 
-      {/* Page 3 — Sponsors (RESTORED) */}
       <div className="responsive-page">
-        <motion.div
-          initial={{ opacity: 0, x: -60 }} whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1 }} viewport={{ margin: '-80px' }}
-          className="responsive-card"
-        >
+        <motion.div initial={{ opacity: 0, x: -60 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 1 }} className="responsive-card">
           <p style={{ fontFamily: '"DM Mono", monospace', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.35em', textTransform: 'uppercase', fontSize: '10px', marginBottom: '1rem' }}>THANK YOU</p>
-          <h2 style={{ fontSize: "clamp(2.2rem, 1vw, 6.5rem)" }} className="massive-heading">SPONSORS</h2>
-          
-          <div style={{ width: '100%', overflow: 'hidden', borderRadius: '0.75rem', position: 'relative' }}>
+          <h2 className="massive-heading">SPONSORS</h2>
+          <div style={{ width: '100%', overflow: 'hidden', borderRadius: '0.75rem', marginBottom: '2rem' }}>
             <motion.div className="sponsor-track">
               {[1, 2, 3, 4, 5, 1, 2, 3, 4, 5].map((i, index) => (
-                <div 
-                  key={index} 
-                  style={{ 
-                    width: 'clamp(160px, 36vw, 240px)', 
-                    height: 'clamp(100px, 22vw, 145px)', 
-                    background: 'rgba(255, 255, 255, 0.05)', 
-                    borderRadius: '0.75rem', 
-                    border: '1px solid rgba(255,255,255,0.1)', 
-                    display: 'flex', 
-                    flexDirection: 'column', 
-                    alignItems: 'center', 
-                    justifyContent: 'center', 
-                    flexShrink: 0 
-                  }}
-                >
-                  <span style={{ fontFamily: '"DM Mono", monospace', color: 'rgba(255,255,255,0.4)', fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase' }}>SPONSOR 0{i}</span>
-                  <span style={{ fontFamily: '"DM Mono", monospace', color: 'rgba(255,255,255,0.2)', fontSize: '9px', marginTop: '0.4rem', textTransform: 'uppercase' }}>OFFICIAL PARTNER</span>
+                <div key={index} style={{ width: '200px', height: '120px', background: 'rgba(255, 255, 255, 0.05)', borderRadius: '0.75rem', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <span style={{ fontFamily: '"DM Mono", monospace', color: 'rgba(255,255,255,0.4)', fontSize: '10px' }}>SPONSOR 0{i}</span>
                 </div>
               ))}
             </motion.div>
           </div>
-          <br />
-          <button 
-            style={{ fontFamily: '"DM Mono", monospace', padding: '1rem 3rem', background: '#fff', color: '#000', fontSize: 'clamp(10px, 2vw, 13px)', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', border: 'none', borderRadius: '100px', cursor: 'pointer', boxShadow: '0 0 30px rgba(255,255,255,0.25)' }}
-            onClick={() => alert("Registration for Sponsors is not open yet")}
-          >
-            JOIN THE FLEET
-          </button>
+          
+          <div className="btn-container" style={{ position: 'relative', display: 'inline-block' }}>
+            <button 
+              style={{ fontFamily: '"DM Mono", monospace', padding: '1rem 3rem', background: '#fff', color: '#000', fontSize: '12px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', border: 'none', borderRadius: '100px', cursor: 'pointer' }}
+              onClick={() => triggerToast('spon', "Sponsor registration not open yet")}
+            >JOIN THE FLEET</button>
+            <AnimatePresence>
+              {activeToast?.id === 'spon' && (
+                <motion.div 
+                   initial={{ opacity: 0, scale: 0.9 }} 
+                   animate={{ opacity: 1, scale: 1 }} 
+                   exit={{ opacity: 0, scale: 0.9 }} 
+                   className="toast-popup"
+                >
+                  {activeToast.message}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </motion.div>
       </div>
     </Scroll>
