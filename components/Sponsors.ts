@@ -1,11 +1,9 @@
-// E:\nexathon-2-temp\components\Sponsors.ts
-
-import appwriteLogo from "../app/flashback/src/assets/appwrite.svg";
-import codecrafterLogo from "../app/flashback/src/assets/codecrafter.webp";
-import fftLogo from "../app/flashback/src/assets/fft.png";
-import fxHeaderLogo from "../app/flashback/src/assets/fx-header.png";
-import sprintLogo from "../app/flashback/src/assets/sprintlogo.png";
-import xyzLogo from "../app/flashback/src/assets/xyz.svg";
+import appwriteLogo from "../app/(main)/flashback/src/assets/appwrite.svg";
+import codecrafterLogo from "../app/(main)/flashback/src/assets/codecrafter.webp";
+import fftLogo from "../app/(main)/flashback/src/assets/fft.png";
+import fxHeaderLogo from "../app/(main)/flashback/src/assets/fx-header.png";
+import sprintLogo from "../app/(main)/flashback/src/assets/sprintlogo.png";
+import xyzLogo from "../app/(main)/flashback/src/assets/xyz.svg";
 
 export const CompanyArchive = () => {
   const companies = [

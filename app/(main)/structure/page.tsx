@@ -100,11 +100,12 @@ export default function NexathonPage() {
           .to('.content-reveal', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.95)
           .to('.reveal-item', { opacity: 1, y: 0, stagger: 0.15, duration: 0.4, ease: 'sine.out' }, 1.1);
 
+        // FIX 4: Reduced scroll from +=300% to +=180% so rounds section feels tighter
         const roundsTL = gsap.timeline({
           scrollTrigger: {
             trigger: '.rounds-outer',
             start: 'top top',
-            end: '+=300%',
+            end: '+=180%',
             pin: true,
             scrub: 0.6,
             invalidateOnRefresh: true,
@@ -115,16 +116,16 @@ export default function NexathonPage() {
         gsap.set('#content-1', { height: 'auto', opacity: 1 });
 
         roundsTL
-          .to({}, { duration: 0.8 })
-          .to('#content-1', { height: 0, opacity: 0, duration: 0.8 })
+          .to({}, { duration: 0.6 })
+          .to('#content-1', { height: 0, opacity: 0, duration: 0.6 })
           .to('#card-1', { className: 'round-card-pinned', duration: 0.1 }, '<')
           .to('#card-2', { className: 'round-card-pinned active', duration: 0.1 }, '<')
-          .to('#content-2', { height: 'auto', opacity: 1, duration: 0.8 }, '<')
-          .to({}, { duration: 0.8 })
-          .to('#content-2', { height: 0, opacity: 0, duration: 0.8 })
+          .to('#content-2', { height: 'auto', opacity: 1, duration: 0.6 }, '<')
+          .to({}, { duration: 0.6 })
+          .to('#content-2', { height: 0, opacity: 0, duration: 0.6 })
           .to('#card-2', { className: 'round-card-pinned', duration: 0.1 }, '<')
           .to('#card-3', { className: 'round-card-pinned active', duration: 0.1 }, '<')
-          .to('#content-3', { height: 'auto', opacity: 1, duration: 0.8 }, '<');
+          .to('#content-3', { height: 'auto', opacity: 1, duration: 0.6 }, '<');
 
         const timelineTL = gsap.timeline({
           scrollTrigger: {
@@ -307,9 +308,12 @@ export default function NexathonPage() {
           overflow-x: visible !important;
         }
 
+        /* ─── FIX 3: Navbar moved to LEFT side ─── */
         .nexathon-nav {
           position: fixed;
-          top: 0; right: 0; bottom: 0;
+          top: 0;
+          left: 0;   /* was: right: 0 */
+          bottom: 0;
           width: 80px;
           z-index: 1000;
           display: flex;
@@ -332,7 +336,9 @@ export default function NexathonPage() {
           text-transform: uppercase;
           color: var(--muted);
           text-decoration: none;
+          /* FIX 3: flip writing direction so text reads top-to-bottom on left side */
           writing-mode: vertical-rl;
+          transform: rotate(180deg);
           transition: color 0.3s;
           display: block;
           white-space: nowrap;
@@ -356,6 +362,7 @@ export default function NexathonPage() {
           }
           .nav-links a {
             writing-mode: horizontal-tb;
+            transform: none;
             letter-spacing: 0.1em;
             font-size: 0.65rem;
           }
@@ -368,7 +375,8 @@ export default function NexathonPage() {
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
-          padding: 60px 100px 100px 80px;
+          /* FIX 3: Added left padding to clear the left navbar (80px wide) */
+          padding: 60px 100px 100px 100px;
           position: relative;
           overflow: hidden;
         }
@@ -449,7 +457,7 @@ export default function NexathonPage() {
         }
 
         .hero-stats { display: flex; gap: 52px; }
-        .hero-stat-label { font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); margin-bottom: 6px; }
+        .hero-stat-label { font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white); margin-bottom: 6px; }
         .hero-stat-val { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--white); }
 
         .register-btn {
@@ -510,6 +518,7 @@ export default function NexathonPage() {
           transform: translateX(-50%) translateY(0);
         }
 
+        /* ─── FIX 1: Purpose section — proper centering for heading-group ─── */
         .purpose-wrapper {
           position: relative;
           background: var(--bg);
@@ -542,6 +551,9 @@ export default function NexathonPage() {
           font-size: clamp(3rem, 10vw, 9rem);
           text-transform: uppercase;
           line-height: 1;
+          /* Kept as original — GSAP animates x/y from off-screen to 0,0.
+             heading-group flex centers the natural in-flow position (x=0,y=0).
+             Adding top/left/transform here would conflict with GSAP's x/y. */
           position: absolute;
           letter-spacing: -0.05em;
           white-space: nowrap;
@@ -629,9 +641,26 @@ export default function NexathonPage() {
         @media (max-width: 768px) {
           .timeline-header { padding: 0 24px; }
           .tl-container { padding: 0 24px !important; }
-          .tl-track { flex-direction: column; gap: 40px; align-items: flex-start !important; }
-          .tl-track::before { left: 20px; top: 0; bottom: 0; width: 1px; height: 100%; }
-          .tl-progress-line { left: 22px; top: 0; width: 2px !important; height: 0%; }
+          .tl-track {
+            flex-direction: column;
+            gap: 40px;
+            align-items: flex-start !important;
+          }
+          /* Vertical track line: centered on the 40px node (left: 20px = node center) */
+          .tl-track::before {
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            height: 100%;
+          }
+          /* Vertical progress line: same center (20px), grows downward via height */
+          .tl-progress-line {
+            left: 20px !important;
+            top: 20px !important;
+            width: 2px !important;
+            height: 0% !important;
+          }
           .tl-item { flex-direction: row !important; gap: 20px; align-items: center; }
           .tl-node { margin-bottom: 0 !important; }
         }
@@ -639,7 +668,19 @@ export default function NexathonPage() {
         .tl-container { width: 100%; padding: 0 80px; position: relative; }
         .tl-track { display: flex; width: 100%; position: relative; justify-content: space-between; }
         .tl-track::before { content: ''; position: absolute; top: 20px; left: 0; right: 0; height: 1px; background: var(--border-strong); z-index: 0; }
-        .tl-progress-line { position: absolute; top: 20px; left: 22px; width: 0%; height: 2px; background: var(--white); box-shadow: 0 0 15px rgba(255,255,255,0.6); z-index: 1; }
+
+        /* Desktop progress line — starts at center of first node (20px = half of 40px node) */
+        .tl-progress-line {
+          position: absolute;
+          top: 20px;
+          left: 20px;
+          width: 0%;
+          height: 2px;
+          background: var(--white);
+          box-shadow: 0 0 15px rgba(255,255,255,0.6);
+          z-index: 1;
+        }
+
         .tl-item { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2; }
         .tl-node { width: 40px; height: 40px; border: 1px solid var(--border-strong); background: var(--bg); border-radius: 50%; margin-bottom: 24px; transition: all 0.4s ease; }
         .tl-label { font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); transition: 0.3s; }
@@ -707,7 +748,7 @@ export default function NexathonPage() {
                   <div>
                     <div className="hero-stat-label">Rounds</div>
                     <div className="hero-stat-val">3</div>
-                  </div>
+                    </div>
                 </div>
                 <button className="register-btn" onClick={handleRegisterClick}>
                   <span>Register Here</span>
