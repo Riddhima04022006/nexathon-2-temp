@@ -833,7 +833,7 @@ export default function NexathonPage() {
           <section className="fade-up" id="leaderboard">
             <h2
               className="section-heading-large"
-              style={{ paddingTop: '100px', marginBottom: '60px' }}
+              style={{ paddingTop: '0px', marginBottom: '60px' }}
             >
               Real-time<br />rankings.
             </h2>
