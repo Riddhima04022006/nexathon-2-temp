@@ -116,6 +116,7 @@ export default function NexathonOverlay() {
         @keyframes loop-sponsors { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-50% - 0.375rem)); } }
       `}</style>
 
+      {/* SECTION 1: ABOUT */}
       <div className="responsive-page">
         <motion.div initial={{ opacity: 0, x: -60 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 1 }} className="responsive-card">
           <p style={{ fontFamily: '"DM Mono", monospace', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.35em', textTransform: 'uppercase', fontSize: '10px', marginBottom: '1rem' }}>MISSION BRIEF</p>
@@ -146,6 +147,7 @@ export default function NexathonOverlay() {
         </motion.div>
       </div>
 
+      {/* SECTION 2: TEAM */}
       <div className="responsive-page">
         <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.9 }} className="responsive-card">
           <p style={{ fontFamily: '"DM Mono", monospace', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.35em', textTransform: 'uppercase', fontSize: '10px', marginBottom: '1rem' }}>THE CREW</p>
@@ -166,6 +168,7 @@ export default function NexathonOverlay() {
         </motion.div>
       </div>
 
+      {/* SECTION 3: SPONSORS */}
       <div className="responsive-page">
         <motion.div initial={{ opacity: 0, x: -60 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 1 }} className="responsive-card">
           <p style={{ fontFamily: '"DM Mono", monospace', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.35em', textTransform: 'uppercase', fontSize: '10px', marginBottom: '1rem' }}>THANK YOU</p>
@@ -183,20 +186,9 @@ export default function NexathonOverlay() {
           <div className="btn-container" style={{ position: 'relative', display: 'inline-block' }}>
             <button 
               style={{ fontFamily: '"DM Mono", monospace', padding: '1rem 3rem', background: '#fff', color: '#000', fontSize: '12px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', border: 'none', borderRadius: '100px', cursor: 'pointer' }}
-              onClick={() => triggerToast('spon', "Sponsor registration not open yet")}
+              // Path matches folder: app/(main)/nexathon/sponsors/page.tsx
+              onClick={() => router.push('/nexathon/sponsors')}
             >JOIN THE FLEET</button>
-            <AnimatePresence>
-              {activeToast?.id === 'spon' && (
-                <motion.div 
-                   initial={{ opacity: 0, scale: 0.9 }} 
-                   animate={{ opacity: 1, scale: 1 }} 
-                   exit={{ opacity: 0, scale: 0.9 }} 
-                   className="toast-popup"
-                >
-                  {activeToast.message}
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
         </motion.div>
       </div>
