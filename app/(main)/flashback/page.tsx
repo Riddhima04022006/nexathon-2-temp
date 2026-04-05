@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Nexathon.css';
-import { CompanyArchive } from '../../components/Sponsors';
+import { CompanyArchive } from '../../../components/Sponsors';
 
 gsap.registerPlugin(ScrollTrigger);
 

@@ -1,9 +1,9 @@
 "use client";
 
 import dynamic from 'next/dynamic';
-import FixedNavbar from '../../components/FixedNavbar';
+import FixedNavbar from '../../../components/FixedNavbar';
 
-const SpaceShuttleScene = dynamic(() => import('../../components/SpaceShuttleScene'), {
+const SpaceShuttleScene = dynamic(() => import('../../../components/SpaceShuttleScene'), {
   ssr: false,
 });
 

@@ -2,7 +2,6 @@ import { Syne } from 'next/font/google';
 import { Mulish } from 'next/font/google';
 import { Bebas_Neue, DM_Mono } from 'next/font/google';
 import CustomCursor from '@/components/CustomCursor';
-import NavigationWrapper from '@/components/NavigationWrapper';
 import localFont from 'next/font/local';
 import type { Viewport } from 'next';
 
@@ -50,7 +49,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className={`bg-black text-white ${bebas.variable} ${dmMono.variable} ${infiniteBeyond.variable} cursor-none`}
       >
         <CustomCursor />
-        <NavigationWrapper />
         {children}
       </body>
     </html>
