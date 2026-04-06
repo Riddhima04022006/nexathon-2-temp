@@ -15,24 +15,12 @@ export default function NexathonSponsor() {
     );
     reveals.forEach((el) => io.observe(el));
 
-    const sections = document.querySelectorAll<HTMLElement>("section[id]");
-    const navLinks = document.querySelectorAll<HTMLAnchorElement>('.nav-links a[href^="#"]');
-    const handleScroll = () => {
-      let current = "";
-      sections.forEach((s) => {
-        if (window.scrollY >= s.offsetTop - 100) current = s.id;
-      });
-      navLinks.forEach((a) => {
-        a.style.color =
-          a.getAttribute("href") === "#" + current ? "var(--text)" : "";
-      });
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       io.disconnect();
-      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const calendlyUrl = "https://calendly.com/harshitharsh49/30min";
 
   return (
     <>
@@ -41,6 +29,7 @@ export default function NexathonSponsor() {
 
         :root {
           --bg: #04030d;
+          --font-infinite-beyond: 'Ethnocentric', sans-serif; 
           --surface: #07061a;
           --surface2: #0b0920;
           --surface3: #0f0d28;
@@ -77,28 +66,30 @@ export default function NexathonSponsor() {
           pointer-events: none;
           z-index: 9999;
         }
-        nav {
+
+        /* SPONSOR NAV */
+        .sponsor-nav {
           position: fixed;
           top: 0; left: 0; right: 0;
-          z-index: 100;
+          z-index: 40;
           padding: 0 40px;
           height: 60px;
           display: flex;
           align-items: center;
-          justify-content: center;
-          gap: 48px;
           background: rgba(4,3,13,0.9);
           backdrop-filter: blur(16px);
           border-bottom: 1px solid var(--border);
         }
-        .nav-logo img { height: 30px; width: 70px; display: block; }
-        .nav-links {
+        .sponsor-nav-logo { position: absolute; left: 40px; }
+        .sponsor-nav-logo img { height: 30px; width: 70px; display: block; }
+        .sponsor-nav-links {
           display: flex;
           gap: 28px;
           list-style: none;
           align-items: center;
+          margin: 0 auto;
         }
-        .nav-links a {
+        .sponsor-nav-links a {
           color: var(--muted);
           text-decoration: none;
           font-size: 11px;
@@ -106,14 +97,29 @@ export default function NexathonSponsor() {
           text-transform: uppercase;
           transition: color 0.2s;
         }
-        .nav-links a:hover { color: var(--text); }
-        .nav-cta {
+        .sponsor-nav-links a:hover { color: var(--text); }
+        .sponsor-nav-cta {
           background: var(--accent) !important;
           color: #fff !important;
           padding: 7px 18px;
           border-radius: 3px;
+          text-decoration: none;
         }
-        .nav-cta:hover { background: var(--accent-bright) !important; }
+        .sponsor-nav-cta:hover { background: var(--accent-bright) !important; }
+
+        /* Mobile: only logo, centered, no links */
+        @media (max-width: 768px) {
+          .sponsor-nav {
+            justify-content: center;
+            padding: 0 18px;
+          }
+          .sponsor-nav-logo {
+            position: static;
+            display: flex;
+            align-items: center;
+          }
+          .sponsor-nav-links { display: none; }
+        }
 
         .wrap { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
 
@@ -134,12 +140,26 @@ export default function NexathonSponsor() {
           background: var(--accent);
         }
 
+        /* Ethnocentric for all headings via --font-infinite-beyond CSS var set in app/layout.tsx */
+        .section-heading,
+        h1.hero-title,
+        .diff-card h3,
+        .diff-num,
+        .usecase-card h3,
+        .cta-inner h2,
+        .signal-point h4,
+        .signal-aside-block h4,
+        .funnel-num,
+        .cta-inner h2,
+        .uc-bg-num {
+          font-family: var(--font-infinite-beyond), 'Syne', sans-serif;
+          letter-spacing: 0.01em;
+        }
+
         .section-heading {
-          font-family: 'Syne', sans-serif;
-          font-weight: 800;
-          font-size: clamp(30px, 4vw, 50px);
-          letter-spacing: -0.03em;
-          line-height: 1.05;
+          font-weight: 400;
+          font-size: clamp(22px, 3.5vw, 42px);
+          line-height: 1.1;
           margin-bottom: 12px;
         }
         .section-sub {
@@ -149,7 +169,7 @@ export default function NexathonSponsor() {
           font-size: 13px;
         }
 
-        /* HERO: bg */
+        /* HERO */
         #hero {
           min-height: 100vh;
           display: flex;
@@ -211,11 +231,10 @@ export default function NexathonSponsor() {
           50% { opacity: 0.4; transform: scale(0.8); }
         }
         h1.hero-title {
-          font-family: 'Syne', sans-serif;
-          font-weight: 800;
-          font-size: clamp(48px, 7vw, 88px);
-          line-height: 1.0;
-          letter-spacing: -0.035em;
+          font-weight: 400;
+          font-size: clamp(36px, 6vw, 72px);
+          line-height: 1.08;
+          letter-spacing: 0.01em;
           margin-bottom: 28px;
           animation: fadeUp 0.8s 0.1s ease both;
         }
@@ -244,10 +263,10 @@ export default function NexathonSponsor() {
           padding: 13px 32px;
           border-radius: 3px;
           text-decoration: none;
-          font-family: 'Syne', sans-serif;
-          font-weight: 700;
-          font-size: 13px;
-          letter-spacing: 0.04em;
+          font-family: var(--font-infinite-beyond), 'Syne', sans-serif;
+          font-weight: 400;
+          font-size: 11px;
+          letter-spacing: 0.08em;
           transition: all 0.2s;
           box-shadow: 0 0 36px rgba(119,92,255,0.3);
           display: inline-block;
@@ -262,7 +281,7 @@ export default function NexathonSponsor() {
           to { opacity: 1; transform: translateY(0); }
         }
 
-        /* DIFFERENT: surface */
+        /* DIFFERENT */
         #different {
           padding: 64px 0;
           background: var(--surface);
@@ -292,13 +311,12 @@ export default function NexathonSponsor() {
         }
         .diff-card:hover::before { transform: scaleX(1); }
         .diff-num {
-          font-family: 'Syne', sans-serif;
-          font-size: 64px;
-          font-weight: 800;
+          font-size: 52px;
+          font-weight: 400;
           color: var(--dim);
           line-height: 1;
           margin-bottom: 12px;
-          letter-spacing: -0.05em;
+          letter-spacing: 0.02em;
         }
         .diff-tag {
           display: inline-block;
@@ -312,14 +330,15 @@ export default function NexathonSponsor() {
           margin-bottom: 12px;
         }
         .diff-card h3 {
-          font-family: 'Syne', sans-serif;
-          font-size: 17px;
-          font-weight: 700;
+          font-size: 14px;
+          font-weight: 400;
           margin-bottom: 10px;
+          letter-spacing: 0.04em;
+          line-height: 1.3;
         }
         .diff-card p { color: var(--muted); font-size: 12px; line-height: 1.7; }
 
-        /* FUNNEL: surface2, tight padding */
+        /* FUNNEL */
         #funnelnumbers { background: var(--surface2); }
         .funnel-visual {
           display: flex;
@@ -340,10 +359,9 @@ export default function NexathonSponsor() {
         }
         .funnel-step { text-align: center; flex: 1; min-width: 90px; position: relative; z-index: 1; }
         .funnel-num {
-          font-family: 'Syne', sans-serif;
-          font-weight: 800;
-          font-size: 32px;
-          letter-spacing: -0.04em;
+          font-weight: 400;
+          font-size: 26px;
+          letter-spacing: 0.02em;
           display: block;
           color: var(--text);
         }
@@ -357,7 +375,7 @@ export default function NexathonSponsor() {
         }
         .funnel-arrow { color: var(--accent); font-size: 18px; opacity: 0.45; flex-shrink: 0; }
 
-        /* SIGNAL: surface */
+        /* SIGNAL */
         #signal {
           padding: 64px 0;
           background: var(--surface);
@@ -387,8 +405,19 @@ export default function NexathonSponsor() {
           color: var(--accent);
           font-style: normal;
         }
-
-        /* 2-col full width below layout, third card centered */
+        .signal-quote::after {
+          content: '"';
+          position: absolute;
+          /* Quote ke end mein lane ke liye */
+          display: inline-block;
+          margin-left: 8px;
+          /* Styling consistent rakhne ke liye */
+          font-size: 56px;
+          line-height: 0.5; /* Alignment adjust karne ke liye */
+          color: var(--accent);
+          font-style: normal;
+          vertical-align: middle;
+        }
         .signal-points-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -400,12 +429,6 @@ export default function NexathonSponsor() {
           max-width: 50%;
           margin: 0 auto;
         }
-        .signal-point-center {
-          display: block;
-        }
-        .signal-point-center .signal-point {
-          width: 100%;
-        }
 
         .signal-point {
           padding: 20px;
@@ -415,40 +438,42 @@ export default function NexathonSponsor() {
         }
         .signal-point:hover { background: var(--surface3); }
         .signal-point h4 {
-          font-family: 'Syne', sans-serif;
-          font-size: 13px;
-          font-weight: 700;
+          font-size: 10px;
+          font-weight: 400;
           margin-bottom: 5px;
+          letter-spacing: 0.06em;
+          line-height: 1.4;
         }
         .signal-point p { font-size: 12px; color: var(--muted); line-height: 1.6; }
 
+        /* Signal aside — #c6c16b background */
         .signal-aside-block {
-          background: var(--surface2);
-          border: 1px solid var(--border);
+          background: rgb(143, 101, 249,0.1);
+          border: 1px solid #9b82ff;
           padding: 24px;
           margin-bottom: 2px;
         }
         .signal-aside-block h4 {
-          font-family: 'Syne', sans-serif;
-          font-size: 11px;
-          font-weight: 700;
-          letter-spacing: 0.08em;
+          font-size: 10px;
+          font-weight: 400;
+          letter-spacing: 0.1em;
           text-transform: uppercase;
           margin-bottom: 14px;
-          color: var(--muted);
+          color: #fffeee;
+          line-height: 1.4;
         }
         .signal-aside-block ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
         .signal-aside-block li {
           font-size: 12px;
-          color: var(--muted);
+          color: #fffffd;
           display: flex;
           align-items: flex-start;
           gap: 10px;
           line-height: 1.5;
         }
-        .signal-aside-block li::before { content: '/'; color: var(--dim); flex-shrink: 0; }
+        .signal-aside-block li::before { content: '★'; color: #6b6620; flex-shrink: 0; }
 
-        /* USE CASES: bg */
+        /* USE CASES */
         #usecases {
           padding: 64px 0;
           background: var(--bg);
@@ -467,6 +492,17 @@ export default function NexathonSponsor() {
           transition: background 0.3s;
         }
         .usecase-card:hover { background: var(--surface2); }
+        .usecase-card::before {
+          content: '';
+          position: absolute;
+          top: 0; left: 0; right: 0;
+          height: 2px;
+          background: linear-gradient(90deg, var(--accent), var(--accent-bright));
+          transform: scaleX(0);
+          transform-origin: left;
+          transition: transform 0.4s ease;
+        }
+        .usecase-card:hover::before { transform: scaleX(1); }
         .usecase-tag {
           font-size: 10px;
           letter-spacing: 0.18em;
@@ -477,12 +513,11 @@ export default function NexathonSponsor() {
         .usecase-tag.startup { color: var(--accent-bright); }
         .usecase-tag.corp { color: var(--gold); }
         .usecase-card h3 {
-          font-family: 'Syne', sans-serif;
-          font-size: 20px;
-          font-weight: 700;
-          letter-spacing: -0.02em;
+          font-size: 15px;
+          font-weight: 400;
+          letter-spacing: 0.03em;
           margin-bottom: 12px;
-          line-height: 1.2;
+          line-height: 1.3;
         }
         .usecase-card > p {
           color: var(--muted);
@@ -511,16 +546,15 @@ export default function NexathonSponsor() {
         .uc-bg-num {
           position: absolute;
           bottom: -16px; right: -6px;
-          font-family: 'Syne', sans-serif;
           font-size: 130px;
-          font-weight: 800;
+          font-weight: 400;
           color: rgba(119,92,255,0.04);
           line-height: 1;
           pointer-events: none;
-          letter-spacing: -0.06em;
+          letter-spacing: 0.02em;
         }
 
-        /* CTA: surface2 */
+        /* CTA */
         #cta {
           padding: 80px 0;
           background: var(--surface2);
@@ -544,11 +578,10 @@ export default function NexathonSponsor() {
           margin: 0 auto;
         }
         .cta-inner h2 {
-          font-family: 'Syne', sans-serif;
-          font-size: clamp(34px, 5vw, 66px);
-          font-weight: 800;
-          letter-spacing: -0.04em;
-          line-height: 1.05;
+          font-size: clamp(24px, 4vw, 50px);
+          font-weight: 400;
+          letter-spacing: 0.01em;
+          line-height: 1.15;
           margin-bottom: 20px;
         }
         .cta-inner h2 em {
@@ -565,6 +598,7 @@ export default function NexathonSponsor() {
           line-height: 1.75;
         }
         .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
         footer {
           background: var(--bg);
           border-top: 1px solid var(--border);
@@ -577,6 +611,7 @@ export default function NexathonSponsor() {
         }
         .footer-logo img { height: 26px; width: 70px; display: block; }
         .footer-note { font-size: 11px; color: var(--muted); letter-spacing: 0.04em; }
+
         .reveal {
           opacity: 0;
           transform: translateY(22px);
@@ -586,20 +621,19 @@ export default function NexathonSponsor() {
         .reveal-d1 { transition-delay: 0.1s; }
         .reveal-d2 { transition-delay: 0.2s; }
         .reveal-d3 { transition-delay: 0.3s; }
+
         @media (max-width: 768px) {
           .wrap { padding: 0 18px; }
-          nav { padding: 0 18px; height: 56px; }
-          .nav-links { display: none; }
 
           #hero { min-height: auto; }
           .hero-inner { padding: 56px 0 48px; }
-          h1.hero-title { font-size: clamp(38px, 10vw, 60px); }
+          h1.hero-title { font-size: clamp(26px, 9vw, 48px); }
           .hero-sub { font-size: 13px; }
 
           #different { padding: 44px 0; }
           .diff-grid { grid-template-columns: 1fr; gap: 2px; }
           .diff-card { padding: 26px 20px; }
-          .diff-num { font-size: 48px; }
+          .diff-num { font-size: 36px; }
 
           .funnel-visual {
             padding: 20px 18px;
@@ -608,7 +642,7 @@ export default function NexathonSponsor() {
             gap: 8px 4px;
           }
           .funnel-step { min-width: 64px; flex: 0 1 auto; }
-          .funnel-num { font-size: 22px; }
+          .funnel-num { font-size: 18px; }
           .funnel-label { font-size: 9px; }
           .funnel-arrow { font-size: 14px; line-height: 2.4; }
 
@@ -616,8 +650,6 @@ export default function NexathonSponsor() {
           .signal-layout { grid-template-columns: 1fr; gap: 28px; }
           .signal-points-grid { grid-template-columns: 1fr; }
           .signal-points-grid .signal-point:nth-child(3) { grid-column: auto; max-width: 100%; margin: 0; }
-          .signal-point-center { display: block; }
-          .signal-point-center .signal-point { width: 100%; }
 
           #usecases { padding: 44px 0; }
           .usecases-grid { grid-template-columns: 1fr; }
@@ -626,7 +658,7 @@ export default function NexathonSponsor() {
 
           #cta { padding: 52px 0; }
           footer { padding: 22px 18px; }
-          .section-heading { font-size: clamp(24px, 7vw, 38px); }
+          .section-heading { font-size: clamp(16px, 6vw, 26px); }
           .section-sub { margin-bottom: 28px; }
         }
 
@@ -635,18 +667,24 @@ export default function NexathonSponsor() {
           .funnel-arrow { transform: rotate(90deg); display: block; }
         }
       `}</style>
-<nav>
-        <a href="#" className="nav-logo">
+
+      <nav className="sponsor-nav">
+        <a href="#" className="sponsor-nav-logo">
           <img src={nexathonLogo.src} alt="Nexathon" />
         </a>
-        <ul className="nav-links">
+        <ul className="sponsor-nav-links">
           <li><a href="#different">Why Nexathon</a></li>
           <li><a href="#signal">The Signal</a></li>
           <li><a href="#usecases">Use Cases</a></li>
-          <li><a href="#cta" className="nav-cta">Become a Partner</a></li>
+          <li>
+            <a href="#cta" className="sponsor-nav-cta">
+              Become a Partner
+            </a>
+          </li>
         </ul>
       </nav>
-<section id="hero">
+
+      <section id="hero">
         <div className="hero-grid-bg" />
         <div className="hero-glow" />
         <div className="wrap">
@@ -662,12 +700,15 @@ export default function NexathonSponsor() {
               You're not buying ad space. You're buying access to a <strong>pre-verified engineering cohort</strong>: the top developers in India, filtered through a process most hiring pipelines can't replicate.
             </p>
             <div className="hero-actions">
-              <a href="#cta" className="btn-primary">Become a Partner</a>
+              <a href="#cta" className="btn-primary">
+                Become a Partner
+              </a>
             </div>
           </div>
         </div>
       </section>
-<section id="different">
+
+      <section id="different">
         <div className="wrap">
           <div className="section-tag">What sets this apart</div>
           <h2 className="section-heading reveal">Not a hackathon.<br />A filtering machine.</h2>
@@ -676,7 +717,7 @@ export default function NexathonSponsor() {
             <div className="diff-card reveal">
               <div className="diff-num">01</div>
               <span className="diff-tag">Filtered, not invited</span>
-              <h3>98%+ elimination</h3>
+              <h3>95%+ elimination</h3>
               <p>Teams don't apply and show up. They survive two consecutive knockout rounds. By the time they reach you, the field has been reduced to the exceptional.</p>
             </div>
             <div className="diff-card reveal reveal-d1">
@@ -694,16 +735,17 @@ export default function NexathonSponsor() {
           </div>
         </div>
       </section>
-<section id="funnelnumbers">
+
+      <section id="funnelnumbers">
         <div className="wrap">
           <div className="funnel-visual reveal">
             <div className="funnel-step">
-              <span className="funnel-num">~1000</span>
-              <div className="funnel-label">Developers<br />register</div>
+              <span className="funnel-num">~250</span>
+              <div className="funnel-label">Teams<br />register</div>
             </div>
             <div className="funnel-arrow">→</div>
             <div className="funnel-step">
-              <span className="funnel-num">~100</span>
+              <span className="funnel-num">~50</span>
               <div className="funnel-label">Qualify<br />Stage 2</div>
             </div>
             <div className="funnel-arrow">→</div>
@@ -719,10 +761,11 @@ export default function NexathonSponsor() {
           </div>
         </div>
       </section>
-<section id="signal">
+
+      <section id="signal">
         <div className="wrap">
           <div className="section-tag">The hiring signal argument</div>
-<div className="signal-layout">
+          <div className="signal-layout">
             <div>
               <h2 className="section-heading reveal" style={{ marginBottom: 24 }}>
                 Resumes tell you what they know.<br />This shows you how they think.
@@ -752,7 +795,7 @@ export default function NexathonSponsor() {
               </div>
             </div>
           </div>
-<div className="signal-points-grid">
+          <div className="signal-points-grid">
             <div className="signal-point reveal reveal-d1">
               <h4>Hiring signal beats resumes</h4>
               <p>The top 15 have self-selected into a highly competitive environment: a strong indicator of intrinsic drive that no CV column captures.</p>
@@ -768,7 +811,8 @@ export default function NexathonSponsor() {
           </div>
         </div>
       </section>
-<section id="usecases">
+
+      <section id="usecases">
         <div className="wrap">
           <div className="section-tag">Use cases</div>
           <h2 className="section-heading reveal">Built for two<br />kinds of companies.</h2>
@@ -800,7 +844,8 @@ export default function NexathonSponsor() {
           </div>
         </div>
       </section>
-<section id="cta">
+
+      <section id="cta">
         <div className="cta-bg" />
         <div className="wrap">
           <div className="cta-inner">
@@ -811,12 +856,15 @@ export default function NexathonSponsor() {
               One slot at the top. Three entry points. All of them offering something a job board never will: a filtered, observed, ranked engineering cohort: not a list of applicants.
             </p>
             <div className="cta-actions reveal reveal-d2">
-              <a href="mailto:sponsor@nexathon.in" className="btn-primary">Apply as Sponsor</a>
+              <a href={calendlyUrl} target="_blank" rel="noopener noreferrer" className="btn-primary">
+                Schedule a Call
+              </a>
             </div>
           </div>
         </div>
       </section>
-<footer>
+
+      <footer>
         <div className="footer-logo">
           <img src={nexathonLogo.src} alt="Nexathon" />
         </div>
