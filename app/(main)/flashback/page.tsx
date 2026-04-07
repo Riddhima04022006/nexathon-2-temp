@@ -264,7 +264,7 @@ export default function Nexathon() {
 
               <div className="stat-val">
 
-                <span className="count-up" data-target="20000" data-suffix="+" data-comma="true">0</span>
+                <span className="count-up long-number" data-target="20000" data-suffix="+" data-comma="true">0</span>
 
               </div>
 
@@ -278,7 +278,7 @@ export default function Nexathon() {
 
             <div className="bento-cell">
 
-              <div className="stat-val">
+              <div className="stat-val middle-number">
 
                 ₹<span className="count-up" data-target="32.5" data-suffix="L" data-dec="1">0</span>
 
@@ -294,7 +294,7 @@ export default function Nexathon() {
 
             <div className="bento-cell">
 
-              <div className="stat-val">
+              <div className="stat-val middle-number">
 
                 ₹<span className="count-up" data-target="25" data-suffix="L+">0</span>
 
@@ -326,7 +326,7 @@ export default function Nexathon() {
 
             <div className="bento-cell">
 
-              <div className="stat-val">
+              <div className="stat-val middle-number">
 
                 ₹<span className="count-up" data-target="2.5" data-suffix="L+" data-dec="1">0</span>
 

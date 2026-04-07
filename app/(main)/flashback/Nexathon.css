@@ -39,7 +39,7 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden; /* was "none" — fixed */
+  overflow: hidden;
 }
 
 #trail-container {
@@ -210,7 +210,7 @@ body::before {
 
 .bento-cell {
   background: var(--bg);
-  padding: 60px 40px;
+  padding: 2.5rem 1.5rem;
   position: relative;
   overflow: hidden;
   transition: background 0.5s ease;
@@ -219,7 +219,7 @@ body::before {
   justify-content: center;
   align-items: center;
   text-align: center;
-  min-height: 380px;
+  min-height: 320px;
 }
 
 .bento-cell::after {
@@ -241,11 +241,24 @@ body::before {
   color: var(--white);
   letter-spacing: -0.02em;
   margin-bottom: 20px;
-  font-size: clamp(3rem, 5.5vw, 6rem);
+  font-size: clamp(1.8rem, 5.2vw, 4rem);
+  white-space: nowrap;
+  width: 100%;
+  overflow-wrap:normal;
+  word-break: break-all;
 }
-
+.stat-val .long-number {
+  /* 800+ wale box ki padding maintain karne ke liye size kam kiya */
+  font-size: clamp(1.5rem, 4.2vw, 3.2rem) !important; 
+  letter-spacing: -0.05em; /* Characters ko thoda pass laya */
+}
+.stat-val .middle-number {
+  /* 800+ wale box ki padding maintain karne ke liye size kam kiya */
+  font-size: clamp(1.5rem, 4.2vw, 3.2rem) !important; 
+  letter-spacing: -0.05em; /* Characters ko thoda pass laya */
+}
 .stat-lbl {
-  font-size: 1rem;
+  font-size: 0.9rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--muted);
@@ -415,23 +428,20 @@ body::before {
 
   /* --- HERO --- */
   #hero {
-    height: 100svh; /* svh avoids mobile browser chrome overlap */
+    height: 100svh;
     overflow: hidden;
   }
 
-  /* Scale the giant title down so it never overflows */
   .hero-word {
-    font-size: clamp(2.8 rem, 18vw, 5rem);
+    font-size: clamp(2.8rem, 18vw, 5rem);
     text-align: center;
     word-break: break-word;
     overflow-wrap: break-word;
     padding: 0 1rem;
   }
 
-  /* Hide trail images on mobile — they cause layout bleed */
   .trail-img { display: none; }
 
-  /* Reposition edition tag so it doesn't clip */
   .hero-edition {
     font-size: 0.58rem;
     letter-spacing: 0.22em;
@@ -441,7 +451,6 @@ body::before {
     width: 90%;
   }
 
-  /* Hide vertical scroll hint — wastes space on mobile */
   .hero-scroll-hint { display: none; }
 
   /* --- STATS --- */
@@ -450,7 +459,6 @@ body::before {
     min-height: auto;
   }
 
-  /* Shrink the huge watermark so it doesn't bleed horizontally */
   .stats-bg-text {
     font-size: 52vw;
     white-space: nowrap;
@@ -465,7 +473,6 @@ body::before {
     padding-bottom: 32px;
   }
 
-  /* Hide the right-hand descriptor text */
   .stats-header-right,
   .sponsors-sub {
     display: none;
@@ -483,7 +490,7 @@ body::before {
   }
 
   .bento-cell {
-    padding: 36px 28px;
+    padding: 2rem 2.5rem;
     min-height: 200px;
   }
 
@@ -497,9 +504,7 @@ body::before {
     letter-spacing: 0.12em;
   }
 
-  /* --- SPONSORS TICKER ---
-     Fix: reduce fade width so cards aren't fully hidden,
-     and shrink card width to fit viewport cleanly         */
+  /* --- SPONSORS TICKER --- */
   .sponsors-header {
     flex-direction: column;
     align-items: flex-start;
@@ -512,13 +517,11 @@ body::before {
     font-size: clamp(2rem, 9vw, 3rem);
   }
 
-  /* Narrower fade edges so logos aren't eaten on small screens */
   .ticker-outer::before,
   .ticker-outer::after {
     width: 48px;
   }
 
-  /* Smaller cards that actually fit on phone widths */
   .sponsor-card {
     width: 160px;
     height: 100px;

@@ -451,7 +451,8 @@ export default function NexathonSponsor() {
           background: rgb(143, 101, 249,0.1);
           border: 1px solid #9b82ff;
           padding: 24px;
-          margin-bottom: 2px;
+          margin-bottom: 10px;
+          border-radius:20px;
         }
         .signal-aside-block h4 {
           font-size: 10px;
@@ -868,7 +869,7 @@ export default function NexathonSponsor() {
         <div className="footer-logo">
           <img src={nexathonLogo.src} alt="Nexathon" />
         </div>
-        <div className="footer-note">© 2026 Nexathon · Delhi, India · sponsor@nexathon.in</div>
+        <div className="footer-note">© 2026 Nexathon · Delhi, India · partnerships@nexathonv2.in</div>
       </footer>
     </>
   );
