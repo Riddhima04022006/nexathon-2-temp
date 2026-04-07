@@ -742,7 +742,7 @@ export default function NexathonPage() {
                   <div>
                     <div className="hero-stat-label">Duration</div>
                     <div className="hero-stat-val">
-                      95 <span style={{ fontSize: '1rem', fontWeight: 300 }}>hrs</span>
+                      30 <span style={{ fontSize: '1rem', fontWeight: 300 }}>hrs</span>
                     </div>
                   </div>
                   <div>
