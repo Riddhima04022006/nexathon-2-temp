@@ -113,17 +113,10 @@ export default function TeamPage() {
 
         <div className="flex-1 relative flex flex-col items-center md:flex-row lg:items-start justify-center md:justify-start lg:pl-16">
           
-          <div className="hidden md:block lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-end lg:pr-40 z-10 pointer-events-none">
-            <AnimatePresence mode="wait">
-              <motion.div key={activeId} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.8 }} className="relative w-[300px] h-[400px] md:w-[400px] md:h-[500px] md:!-translate-x-[-150px] xl:w-[850px] xl:h-[950px] xl:!translate-x-24 -mt-20">
-                <Image src={activeMember.image} alt={activeMember.name} fill className="object-contain" priority />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
           <div className="flex md:hidden justify-center w-full z-10">
             <AnimatePresence mode="wait">
-              <motion.div key={activeId} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.8 }} className="relative w-[180px] h-[200px] -mb-2">
+              <motion.div key={activeId} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} 
+                className="relative w-[250px] h-[270px] -mb-8">
                 <Image src={activeMember.image} alt={activeMember.name} fill className="object-contain" priority />
               </motion.div>
             </AnimatePresence>
