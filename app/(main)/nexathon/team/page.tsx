@@ -115,7 +115,7 @@ export default function TeamPage() {
           
           <div className="hidden md:block lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-end lg:pr-40 z-10 pointer-events-none">
             <AnimatePresence mode="wait">
-              <motion.div key={activeId} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.8 }} className="relative w-[300px] h-[400px] md:w-[400px] md:h-[500px] md:!-translate-x-[-150px] xl:w-[650px] xl:h-[750px] xl:!translate-x-24 -mt-20">
+              <motion.div key={activeId} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.8 }} className="relative w-[300px] h-[400px] md:w-[400px] md:h-[500px] md:!-translate-x-[-150px] xl:w-[850px] xl:h-[950px] xl:!translate-x-24 -mt-20">
                 <Image src={activeMember.image} alt={activeMember.name} fill className="object-contain" priority />
               </motion.div>
             </AnimatePresence>
@@ -139,7 +139,7 @@ export default function TeamPage() {
                 <div className="flex items-center justify-center md:justify-start gap-4 mb-3 lg:mb-8">
                   <div className="hidden md:block h-[2px] w-12 lg:w-16 bg-cyan-500" />
                   <span className="relative px-3 py-1 text-[11px] md:text-xs lg:text-lg font-mono text-cyan-400 tracking-[0.3em] uppercase font-bold" style={{ textShadow: "2px 2px 0px #083344" }}>
-                    <div className="absolute inset-0 bg-black/60 -z-10 rounded-sm" />{activeMember.role}
+                    {activeMember.role}
                   </span>
                 </div>
 
