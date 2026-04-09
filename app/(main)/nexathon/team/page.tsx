@@ -6,6 +6,17 @@ import { ChevronUp, ChevronDown, Linkedin, Instagram, Github } from "lucide-reac
 import Image, { StaticImageData } from "next/image";
 import { DM_Mono } from "next/font/google";
 
+<style jsx global>{`
+  html, body {
+    overflow: hidden;
+    height: 100%;
+    position: fixed;
+    width: 100%;
+  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+`}</style>
+
 const dmMono = DM_Mono({ subsets: ["latin"], weight: ["300", "400", "500"] });
 
 import backgroundImage from "../assets/bg.jpeg";
@@ -103,8 +114,7 @@ export default function TeamPage() {
           
           <div className="hidden md:block lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-end lg:pr-40 z-10 pointer-events-none">
             <AnimatePresence mode="wait">
-              <motion.div key={activeId} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.8 }} 
-                className="relative w-[280px] h-[350px] md:w-[350px] md:h-[450px] md:!-translate-x-[-150px] md:-top-20 xl:w-[550px] xl:h-[650px] xl:!translate-x-24 xl:top-0 xl:translate-y-[-40px]">
+              <motion.div key={activeId} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.8 }} className="relative w-[280px] h-[350px] md:w-[350px] md:h-[450px] md:!-translate-x-[-150px] md:-top-40 xl:w-[550px] xl:h-[650px] xl:!translate-x-24 xl:-top-32">
                 <Image src={activeMember.image} alt={activeMember.name} fill className="object-contain" priority />
               </motion.div>
             </AnimatePresence>

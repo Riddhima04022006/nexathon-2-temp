@@ -29,8 +29,8 @@ import Vikram from "../app/(main)/nexathon/assets/Icon_Vikram.png";
 const team = [
   { name: "Prakul", img: Prakul, role: "Co Founder, NEVERON" },
   { name: "Gurnoor", img: Gurnoor, role: "Co Founder, NEVERON" },
-  { name: "Harshit", img: Harshit, role: "Lead Organizer" },
   { name: "Medhavee", img: Medhavee, role: "Lead Organizer" },
+  { name: "Harshit", img: Harshit, role: "Lead Organizer" },
   { name: "Raina", img: Raina, role: "Advisor, Partnerships and Outreach" },
   { name: "Riddhima", img: Riddhima, role: "Web Developer & Panelist" },
   { name: "Sipra", img: Sipra, role: "Brand Designer" },
