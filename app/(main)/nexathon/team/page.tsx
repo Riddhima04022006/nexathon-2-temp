@@ -6,18 +6,6 @@ import { ChevronUp, ChevronDown, Linkedin, Instagram, Github } from "lucide-reac
 import Image, { StaticImageData } from "next/image";
 import { DM_Mono } from "next/font/google";
 
-<style jsx global>{`
-  html, body {
-    overflow: hidden !important;
-    height: 100% !important;
-    width: 100% !important;
-    position: fixed;
-    touch-action: none; /* Mobile scroll block karne ke liye */
-  }
-  .no-scrollbar::-webkit-scrollbar { display: none; }
-  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-`}</style>
-
 const dmMono = DM_Mono({ subsets: ["latin"], weight: ["300", "400", "500"] });
 
 import backgroundImage from "../assets/bg.jpeg";
@@ -86,12 +74,24 @@ export default function TeamPage() {
 
   return (
     <main className="fixed inset-0 w-screen h-screen bg-[#050505] text-white flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+      <style jsx global>{`
+        html, body {
+          overflow: hidden !important;
+          height: 100% !important;
+          width: 100% !important;
+          position: fixed;
+          touch-action: none;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
+      
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <Image src={backgroundImage} alt="Background" fill className="object-cover opacity-100" priority />
         <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/40 to-transparent" />
       </div>
 
-      <div className="relative z-30 w-full max-w-[1400px] h-full flex flex-col lg:flex-row px-4 lg:px-8 transform -translate-y-[20px] md:-translate-y-[30px]">      
+      <div className="relative z-30 w-full max-w-[1400px] h-full flex flex-col lg:flex-row px-4 lg:px-8">      
         <div className="w-full lg:w-[200px] flex flex-col items-start pt-10 lg:py-20 h-auto lg:h-[90vh] z-50">
           <h1 className="text-[10px] lg:text-sm font-serif font-bold tracking-[0.3em] lg:tracking-[0.4em] text-white uppercase mb-5 lg:mb-8 pl-10 lg:pl-2 whitespace-nowrap">CAST AND CREW</h1>
           <div className="flex flex-row lg:flex-col items-center gap-2 h-full w-full relative z-[100]">
@@ -111,18 +111,27 @@ export default function TeamPage() {
           </div>
         </div>
 
-        <div className="flex-1 relative flex flex-col items-center md:flex-row lg:items-start justify-center md:justify-start lg:pl-16">
+        <div className="flex-1 relative flex flex-col items-center md:flex-row lg:items-end justify-center md:justify-start lg:pl-16 lg:pb-4">
           
-          <div className="flex md:hidden justify-center w-full z-10">
+          <div className="hidden md:block lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-end lg:pr-20 z-10 pointer-events-none">
             <AnimatePresence mode="wait">
-              <motion.div key={activeId} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} 
-                className="relative w-[250px] h-[270px] -mb-8">
+              <motion.div key={activeId} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.8 }} 
+                className="relative md:w-[400px] md:h-[500px] xl:w-[650px] xl:h-[750px] xl:!translate-x-32 xl:translate-y-[-20px]">
                 <Image src={activeMember.image} alt={activeMember.name} fill className="object-contain" priority />
               </motion.div>
             </AnimatePresence>
           </div>
 
-          <div className="relative z-20 w-full flex flex-col items-center md:items-start md:pl-8 lg:pl-0 lg:mt-0">
+          <div className="flex md:hidden justify-center w-full z-10">
+            <AnimatePresence mode="wait">
+              <motion.div key={activeId} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} 
+                className="relative w-[250px] h-[270px] -mt-16 -mb-0">
+                <Image src={activeMember.image} alt={activeMember.name} fill className="object-contain" priority />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          <div className="relative z-20 w-full flex flex-col items-center md:items-start md:pl-8 lg:pl-0 lg:mb-4">
             <AnimatePresence mode="wait">
               <motion.div key={activeId} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.6, delay: 0.2 }} className="max-w-xl text-center md:text-left drop-shadow-2xl px-2">
                 <h2 className={`${ethnocentric.className} text-3xl md:text-4xl lg:text-7xl font-bold text-white mb-2 uppercase tracking-tighter`}>
@@ -132,11 +141,11 @@ export default function TeamPage() {
                 <div className="flex items-center justify-center md:justify-start gap-4 mb-3 lg:mb-8">
                   <div className="hidden md:block h-[2px] w-12 lg:w-16 bg-cyan-500" />
                   <span className="relative px-3 py-1 text-[11px] md:text-xs lg:text-lg font-mono text-cyan-400 tracking-[0.3em] uppercase font-bold" style={{ textShadow: "2px 2px 0px #083344" }}>
-                    {activeMember.role}
+                    <div className="absolute inset-0 bg-black/60 -z-10 rounded-sm" />{activeMember.role}
                   </span>
                 </div>
 
-              <p className={`${dmMono.className} text-[11px] md:text-[13px] lg:text-lg text-zinc-400 bg-black/50 rounded-xl px-4 py-1.5 md:px-5 md:py-2 lg:px-10 lg:py-3 xl:pr-4 xl:mt-12 text-center md:text-left w-full lg:w-[750px] xl:w-[900px] leading-relaxed`}>
+              <p className={`${dmMono.className} text-[11px] md:text-[13px] lg:text-lg text-zinc-400 bg-black/50 rounded-xl px-4 py-1.5 md:px-5 md:py-2 lg:px-10 lg:py-3 xl:pr-4 xl:mt-8 text-center md:text-left w-full lg:w-[750px] xl:w-[900px] leading-relaxed`}>
                   {activeMember.description}
                 </p>
 
@@ -164,11 +173,6 @@ export default function TeamPage() {
           </div>
         </div>
       </div>
-
-      <style jsx global>{`
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-      `}</style>
     </main>
   );
 }
