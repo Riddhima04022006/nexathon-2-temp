@@ -73,7 +73,7 @@ export default function TeamPage() {
   };
 
   return (
-    <main className="min-h-screen lg:h-screen w-full bg-[#050505] text-white flex items-center justify-center overflow-x-hidden lg:overflow-hidden relative">
+    <main className="h-screen w-screen bg-[#050505] text-white flex items-center justify-center overflow-hidden relative fixed inset-0">
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <Image src={backgroundImage} alt="Background" fill className="object-cover opacity-100" priority />
         <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/40 to-transparent" />
