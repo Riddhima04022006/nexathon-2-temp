@@ -6,8 +6,14 @@ import { ChevronUp, ChevronDown, Linkedin, Instagram, Github } from "lucide-reac
 import Image, { StaticImageData } from "next/image";
 import { DM_Mono } from "next/font/google";
 
+// Fonts
 const dmMono = DM_Mono({ subsets: ["latin"], weight: ["300", "400", "500"] });
+const ethnocentric = localFont({
+  src: "../../../fonts/Ethnocentric-Regular.otf", 
+  variable: "--font-ethnocentric",
+});
 
+// Assets
 import backgroundImage from "../assets/bg.jpeg";
 import Harshit from "../assets/Harshit_Blue.png";
 import Prakul from "../assets/Prakul_Blue.png";
@@ -30,11 +36,6 @@ interface TeamMember {
   id: number; name: string; role: string; description: string; image: StaticImageData;
   linkedin?: string; instagram?: string; github?: string;
 }
-
-const ethnocentric = localFont({
-  src: "../../../fonts/Ethnocentric-Regular.otf", 
-  variable: "--font-ethnocentric",
-});
 
 const teamMembers: TeamMember[] = [
   { id: 1, name: "Prakul", role: "Co Founder, NEVERON", description: "Prakul anchors the operational and strategic backbone of NEVERON, bringing discipline to growth and expansion. He focuses on structuring decisions, optimizing resources, and maintaining clarity as the organization scales. His work reflects a balance of pragmatism and foresight, ensuring that execution remains controlled while ambition continues to expand.", image: Prakul, linkedin: "https://www.linkedin.com/in/prakul-bansal/" },
@@ -86,91 +87,98 @@ export default function TeamPage() {
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
       
+      {/* Background Section */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <Image src={backgroundImage} alt="Background" fill className="object-cover opacity-100" priority />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/95 via-black/40 to-transparent" />
       </div>
 
-      <div className="relative z-30 w-full max-w-[1400px] h-full flex flex-col lg:flex-row px-4 lg:px-8">      
-        <div className="w-full lg:w-[200px] flex flex-col items-start pt-10 lg:py-20 h-auto lg:h-[90vh] z-50">
-          <h1 className="text-[10px] lg:text-sm font-serif font-bold tracking-[0.3em] lg:tracking-[0.4em] text-white uppercase mb-5 lg:mb-8 pl-10 lg:pl-2 whitespace-nowrap">CAST AND CREW</h1>
+      <div className="relative z-30 w-full max-w-[1300px] h-full flex flex-col lg:flex-row px-6 lg:px-16">      
+        
+        {/* Left Sidebar */}
+        <div className="w-full lg:w-[150px] flex flex-col items-start pt-10 lg:py-24 h-auto lg:h-[90vh] z-50">
+          <h1 className="text-[10px] lg:text-[11px] font-serif font-bold tracking-[0.4em] text-white/70 uppercase mb-5 lg:mb-10 pl-10 lg:pl-0 whitespace-nowrap">CAST AND CREW</h1>
           <div className="flex flex-row lg:flex-col items-center gap-2 h-full w-full relative z-[100]">
             <button onClick={() => scroll("up")} className="p-1.5 lg:p-2 opacity-40 hover:opacity-100 transition-opacity z-[110] shrink-0">
-              <ChevronUp className="rotate-[-90deg] lg:rotate-0" size={20} />
+              <ChevronUp className="rotate-[-90deg] lg:rotate-0" size={18} />
             </button>
-            <div ref={scrollContainerRef} className="flex flex-row lg:flex-col items-center gap-4 lg:gap-8 py-2 lg:py-10 px-2 overflow-x-auto lg:overflow-y-auto no-scrollbar scroll-smooth h-full lg:max-h-[500px]">
+            <div ref={scrollContainerRef} className="flex flex-row lg:flex-col items-center gap-4 lg:gap-6 py-2 lg:py-6 px-2 overflow-x-auto lg:overflow-y-auto no-scrollbar scroll-smooth h-full lg:max-h-[420px]">
               {teamMembers.map((m) => (
-                <button key={m.id} onClick={() => setActiveId(m.id)} className={`relative shrink-0 w-10 h-10 lg:w-14 lg:h-14 rounded-full overflow-hidden border-2 transition-all duration-500 ${activeId === m.id ? "border-cyan-500 scale-125 shadow-[0_0_20px_rgba(6,182,212,0.5)]" : "border-zinc-800 grayscale opacity-40 hover:opacity-100"}`}>
+                <button key={m.id} onClick={() => setActiveId(m.id)} className={`relative shrink-0 w-10 h-10 lg:w-12 lg:h-12 rounded-full overflow-hidden border-2 transition-all duration-500 ${activeId === m.id ? "border-cyan-500 scale-110 shadow-[0_0_15px_rgba(6,182,212,0.4)]" : "border-zinc-800 grayscale opacity-40 hover:opacity-100"}`}>
                   <Image src={m.image} alt={m.name} fill className="object-cover" />
                 </button>
               ))}
             </div>
             <button onClick={() => scroll("down")} className="p-1.5 lg:p-2 opacity-40 hover:opacity-100 transition-opacity z-[110] shrink-0">
-              <ChevronDown className="rotate-[-90deg] lg:rotate-0" size={20} />
+              <ChevronDown className="rotate-[-90deg] lg:rotate-0" size={18} />
             </button>
           </div>
         </div>
 
-        <div className="flex-1 relative flex flex-col items-center md:flex-row lg:items-end justify-center md:justify-start lg:pl-16 lg:pb-4">
+        {/* Main Content Area */}
+        <div className="flex-1 relative flex flex-col items-center md:flex-row lg:items-center justify-center md:justify-start lg:pl-10 h-full">
           
-          <div className="hidden md:block lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-end lg:pr-20 z-10 pointer-events-none">
+          {/* Main Portrait Image (Desktop) */}
+          <div className="hidden md:block lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-end lg:pr-12 z-10 pointer-events-none">
             <AnimatePresence mode="wait">
-              <motion.div key={activeId} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.8 }} 
-                className="relative md:w-[400px] md:h-[500px] xl:w-[650px] xl:h-[750px] xl:!translate-x-32 xl:translate-y-[-20px]">
+              <motion.div key={activeId} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.7 }} 
+                className="relative md:w-[320px] md:h-[450px] lg:w-[420px] lg:h-[520px] xl:w-[500px] xl:h-[650px] lg:translate-x-12">
                 <Image src={activeMember.image} alt={activeMember.name} fill className="object-contain" priority />
               </motion.div>
             </AnimatePresence>
           </div>
 
-          <div className="flex md:hidden justify-center w-full z-10">
+          {/* Mobile Image - Shifted Up with pt-2 */}
+          <div className="flex md:hidden justify-center w-full z-10 pt-2">
             <AnimatePresence mode="wait">
               <motion.div key={activeId} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} 
-                className="relative w-[250px] h-[270px] -mt-16 -mb-0">
+                className="relative w-[230px] h-[250px]">
                 <Image src={activeMember.image} alt={activeMember.name} fill className="object-contain" priority />
               </motion.div>
             </AnimatePresence>
           </div>
 
-          <div className="relative z-20 w-full flex flex-col items-center md:items-start md:pl-8 lg:pl-0 lg:mb-4">
+          {/* Text Content - Shifted up on Mobile via pb-44 */}
+          <div className="relative z-20 w-full h-full flex flex-col items-center justify-end pb-44 md:items-start md:pl-8 md:justify-center lg:pl-0 lg:justify-end lg:pb-16 xl:pb-24">
             <AnimatePresence mode="wait">
               <motion.div key={activeId} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.6, delay: 0.2 }} className="max-w-xl text-center md:text-left drop-shadow-2xl px-2">
-                <h2 className={`${ethnocentric.className} text-3xl md:text-4xl lg:text-7xl font-bold text-white mb-2 uppercase tracking-tighter`}>
-                  <span className="relative px-2 py-0.5">{activeMember.name}</span>
+                
+                <h2 className={`${ethnocentric.className} text-2xl md:text-4xl lg:text-4xl xl:text-5xl font-bold text-white mb-1 md:mb-2 uppercase tracking-tight`}>
+                  <span className="relative">{activeMember.name}</span>
                 </h2>
                 
-                <div className="flex items-center justify-center md:justify-start gap-4 mb-3 lg:mb-8">
-                  <div className="hidden md:block h-[2px] w-12 lg:w-16 bg-cyan-500" />
-                  <span className="relative px-3 py-1 text-[11px] md:text-xs lg:text-lg font-mono text-cyan-400 tracking-[0.3em] uppercase font-bold" style={{ textShadow: "2px 2px 0px #083344" }}>
-                  {activeMember.role}
+                <div className="flex items-center justify-center md:justify-start gap-3 mb-2 md:mb-3 lg:mb-6">
+                  <div className="hidden md:block h-[1px] w-8 lg:w-10 bg-cyan-500" />
+                  <span className="relative text-[10px] md:text-xs lg:text-[12px] font-mono text-cyan-400 tracking-[0.3em] uppercase font-bold">
+                    {activeMember.role}
                   </span>
                 </div>
 
-              <p className={`${dmMono.className} text-[11px] md:text-[13px] lg:text-lg text-zinc-400 bg-black/50 rounded-xl px-4 py-1.5 md:px-5 md:py-2 lg:px-10 lg:py-3 xl:pr-4 xl:mt-8 text-center md:text-left w-full lg:w-[750px] xl:w-[900px] leading-relaxed`}>
+                <p className={`${dmMono.className} text-[10px] md:text-[13px] lg:text-[14px] xl:text-[15px] text-zinc-400 bg-black/40 backdrop-blur-md rounded-xl px-4 py-2 md:px-5 md:py-3 lg:px-8 lg:py-5 text-center md:text-left w-full lg:max-w-[500px] xl:max-w-[600px] leading-relaxed border border-white/5`}>
                   {activeMember.description}
                 </p>
 
-                <div className="flex items-center justify-center md:justify-start gap-6 mt-4 md:-mt-10 lg:mt-4 relative w-full left-0 md:left-5">
+                <div className="flex items-center justify-center md:justify-start gap-6 mt-4 md:mt-6 relative w-full left-0 md:left-2">
                   {activeMember.linkedin && (
-                    <a href={activeMember.linkedin} target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-cyan-400 transition-all">
-                      <Linkedin size={18} className="lg:w-6 lg:h-6" />
+                    <a href={activeMember.linkedin} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-cyan-400 transition-all">
+                      <Linkedin size={18} className="lg:w-5 lg:h-5" />
                     </a>
                   )}
-                  
                   {activeMember.instagram && (
-                    <a href={activeMember.instagram} target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-pink-500 transition-all">
-                      <Instagram size={18} className="lg:w-6 lg:h-6" />
+                    <a href={activeMember.instagram} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-pink-500 transition-all">
+                      <Instagram size={18} className="lg:w-5 lg:h-5" />
                     </a>
                   )}
-
                   {activeMember.github && (
-                    <a href={activeMember.github} target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-slate-500 transition-all">
-                      <Github size={18} className="lg:w-6 lg:h-6" />
+                    <a href={activeMember.github} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white transition-all">
+                      <Github size={18} className="lg:w-5 lg:h-5" />
                     </a>
                   )}
                 </div>
               </motion.div>
             </AnimatePresence>
           </div>
+
         </div>
       </div>
     </main>
