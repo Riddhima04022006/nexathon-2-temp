@@ -116,8 +116,7 @@ export default function TeamPage() {
         </div>
 
         {/* Main Content Area */}
-        <div className="flex-1 relative flex flex-col items-center md:flex-row lg:items-center justify-center md:justify-start lg:pl-10 h-full">
-          
+        <div className="flex-1 relative flex flex-col items-center md:flex-row lg:items-center justify-center md:justify-start lg:pl-10 h-full pt-[10px] md:pt-0">          
           {/* Main Portrait Image (Desktop) */}
           <div className="hidden md:block lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-end lg:pr-12 z-10 pointer-events-none">
             <AnimatePresence mode="wait">
