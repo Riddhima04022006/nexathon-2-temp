@@ -8,7 +8,7 @@ const menuItems = [
   { id: "01", label: "HOME", icon: "◈", active: true, link: "/nexathon" },
   { id: "02", label: "STRUCTURE", icon: "⊕", link: "/structure" },
   { id: "03", label: "SPONSORS", icon: "☆", link: "/sponsors" },
-  { id: "04", label: "FLASHBACK", icon: "⏻", link: "/flashback" }
+  { id: "04", label: "NEXATHON V1", icon: "⏻", link: "/flashback" }
 ];
 
 const stats = [

@@ -8,12 +8,9 @@ import * as THREE from 'three';
 export default function SpaceShuttleModel() {
   const { scene } = useGLTF('/models/space_shuttle.glb');
   
-  // Outer group for scroll transitions (Position, Base Rotation, Scale)
   const scrollGroupRef = useRef<THREE.Group>(null);
-  // Inner group for continuous animations (Hover, Shake)
   const wobbleGroupRef = useRef<THREE.Group>(null);
 
-  // Store the frozen quaternion at the moment we leave state 0
   const frozenQ0 = useRef<THREE.Quaternion>(new THREE.Quaternion());
   const hasFrozenQ0 = useRef(false);
   
@@ -23,109 +20,69 @@ export default function SpaceShuttleModel() {
   const isMobile = viewport.width < 6;
   const isTablet = viewport.width >= 6 && viewport.width < 10;
 
-  useFrame((state, delta) => {
+  useFrame((state) => {
     if (!scrollGroupRef.current || !wobbleGroupRef.current) return;
     
     const offset = scroll.offset; 
     const time = state.clock.elapsedTime;
-
-    // --------------------------------------------------------
-    // 1. SCROLL ANIMATIONS (Outer Group)
-    // --------------------------------------------------------
-
-    // State 0: Initial (Page 1) — Tilted nicely
-    const pos0 = isMobile
-      ? new THREE.Vector3(0, 0.5, -4)        // Mobile: centered on screen, pushed back behind text
-      : isTablet
-        ? new THREE.Vector3(2, 1, -1)        // Tablet: offset right, slightly above
-        : new THREE.Vector3(0, 0, 0);        // Desktop: centered
-    const rot0 = isMobile
-      ? new THREE.Euler(0.3, -Math.PI / 5, 0.15)   // Mobile: slightly more tilt for drama
-      : new THREE.Euler(0.2, -Math.PI / 6, 0.1);
+    const pos0 = isMobile ? new THREE.Vector3(0, 0.5, -4) : isTablet ? new THREE.Vector3(2, 1, -1) : new THREE.Vector3(0, 0, 0);
+    const rot0 = isMobile ? new THREE.Euler(0.3, -Math.PI / 5, 0.15) : new THREE.Euler(0.2, -Math.PI / 6, 0.1);
     const scale0 = isMobile ? 0.8 : isTablet ? 1.2 : 1.7;
-
-    // State 1: Background (Page 2)
-    const pos1 = isMobile
-      ? new THREE.Vector3(0, 0.5, -6)        // Mobile: centered, pushed further back
-      : isTablet
-        ? new THREE.Vector3(2, 3, -4)
-        : new THREE.Vector3(3, 2, -5);
-    const rot1 = new THREE.Euler(0.2, Math.PI * -1.5, Math.PI * 0.2);
+    const pos1 = isMobile 
+      ? new THREE.Vector3(-0.5, 0.5, -5) 
+      : isTablet 
+        ? new THREE.Vector3(-2.5, 1, -3) 
+        : new THREE.Vector3(-4.5, 1, -2); 
+    const rot1 = new THREE.Euler(0.2, Math.PI * 0.5, Math.PI * 0.1); 
     const scale1 = isMobile ? 0.65 : isTablet ? 0.9 : 1.5;
 
-    // State 2: Close-up (Page 3) — Positioned right, climbing towards top-left
-    const pos2 = isMobile
-      ? new THREE.Vector3(0, 0, -3)          // Mobile: centered on screen
-      : isTablet
-        ? new THREE.Vector3(2, 1, 1)
-        : new THREE.Vector3(3, 0, 3);
-    const rot2 = isMobile
-      ? new THREE.Euler(Math.PI / 5, -Math.PI / 4, Math.PI / 10)  // Mobile: dynamic angle
-      : new THREE.Euler(Math.PI / 6, -Math.PI / 3, Math.PI / 12);
-    const scale2 = isMobile ? 0.7 : isTablet ? 1.1 : 1.5;
+    const pos2 = isMobile ? new THREE.Vector3(0.5, 0, -5) : isTablet ? new THREE.Vector3(3, 1, -2) : new THREE.Vector3(4, 0.5, -2);
+    const rot2 = isMobile ? new THREE.Euler(Math.PI / 6, -Math.PI / 4, 0) : new THREE.Euler(Math.PI / 8, -Math.PI / 3, 0);
+    const scale2 = isMobile ? 0.6 : isTablet ? 1.0 : 1.3;
 
-    // Convert Euler angles to Quaternions for smooth transitions
+    const pos3 = isMobile ? new THREE.Vector3(-0.5, -0.5, -4) : isTablet ? new THREE.Vector3(-3, 0.5, 0) : new THREE.Vector3(-4, -0.5, 1);
+    const rot3 = new THREE.Euler(rot2.x, rot2.y + Math.PI, rot2.z);
+    const scale3 = scale2;
+
     const q0_target = new THREE.Quaternion().setFromEuler(rot0);
     const q1 = new THREE.Quaternion().setFromEuler(rot1);
     const q2 = new THREE.Quaternion().setFromEuler(rot2);
-
+    const q3 = new THREE.Quaternion().setFromEuler(rot3);
     if (offset < 0.01) {
-      // Page 1: Smoothly hold the upright, tilted orientation
       scrollGroupRef.current.position.lerp(pos0, 0.1);
       scrollGroupRef.current.quaternion.slerp(q0_target, 0.1);
       scrollGroupRef.current.scale.setScalar(scale0);
-
-      // Reset the frozen flag so we re-capture on the next transition out
       hasFrozenQ0.current = false;
-
-    } else if (offset < 0.5) {
-      // Transition Page 1 -> Page 2
+    } 
+    else if (offset < 0.33) {
       if (!hasFrozenQ0.current) {
         frozenQ0.current.copy(scrollGroupRef.current.quaternion);
         hasFrozenQ0.current = true;
       }
-
-      const progress = offset / 0.5;
-      const easeProgress = Math.sin(progress * Math.PI - Math.PI / 2) * 0.5 + 0.5;
-
-      scrollGroupRef.current.position.lerpVectors(pos0, pos1, easeProgress);
-      scrollGroupRef.current.quaternion.slerpQuaternions(frozenQ0.current, q1, easeProgress);
-
-      const s = THREE.MathUtils.lerp(scale0, scale1, easeProgress);
-      scrollGroupRef.current.scale.setScalar(s);
-
-    } else {
-      // Transition Page 2 -> Page 3
-      const progress = (offset - 0.5) / 0.5;
-      const easeProgress = Math.sin(progress * Math.PI - Math.PI / 2) * 0.5 + 0.5;
-
-      scrollGroupRef.current.position.lerpVectors(pos1, pos2, easeProgress);
-      scrollGroupRef.current.quaternion.slerpQuaternions(q1, q2, easeProgress);
-
-      const s = THREE.MathUtils.lerp(scale1, scale2, easeProgress);
-      scrollGroupRef.current.scale.setScalar(s);
+      const progress = offset / 0.33;
+      const ease = Math.sin(progress * Math.PI - Math.PI / 2) * 0.5 + 0.5;
+      scrollGroupRef.current.position.lerpVectors(pos0, pos1, ease);
+      scrollGroupRef.current.quaternion.slerpQuaternions(frozenQ0.current, q1, ease);
+      scrollGroupRef.current.scale.setScalar(THREE.MathUtils.lerp(scale0, scale1, ease));
+    } 
+    else if (offset < 0.66) {
+      const progress = (offset - 0.33) / 0.33;
+      const ease = Math.sin(progress * Math.PI - Math.PI / 2) * 0.5 + 0.5;
+      scrollGroupRef.current.position.lerpVectors(pos1, pos2, ease);
+      scrollGroupRef.current.quaternion.slerpQuaternions(q1, q2, ease);
+      scrollGroupRef.current.scale.setScalar(THREE.MathUtils.lerp(scale1, scale2, ease));
+    } 
+    else {
+      const progress = (offset - 0.66) / 0.34;
+      const ease = Math.sin(progress * Math.PI - Math.PI / 2) * 0.5 + 0.5;
+      scrollGroupRef.current.position.lerpVectors(pos2, pos3, ease);
+      scrollGroupRef.current.quaternion.slerpQuaternions(q2, q3, ease);
+      scrollGroupRef.current.scale.setScalar(THREE.MathUtils.lerp(scale2, scale3, ease));
     }
-
-    // --------------------------------------------------------
-    // 2. HOVER & SHAKE ANIMATIONS (Inner Group)
-    // --------------------------------------------------------
-    
-    // Constant subtle hover
     const hoverY = Math.sin(time * 2) * 0.1;
     const hoverRotZ = Math.sin(time * 1.5) * 0.03;
 
-    let shakeX = 0;
-    let shakeY = 0;
-    
-    // High-speed shake effect — only during page 2 → 3 transition
-    if (offset > 0.5) {
-      const speedProgress = (offset - 0.5) * 2;
-      const intensity = 0.05 * speedProgress;
-      shakeX = 0;
-      shakeY = 0;
-    }
-
-    wobbleGroupRef.current.position.set(shakeX, hoverY + shakeY, 0);
+    wobbleGroupRef.current.position.set(0, hoverY, 0);
     wobbleGroupRef.current.rotation.set(0, 0, hoverRotZ);
   });
 

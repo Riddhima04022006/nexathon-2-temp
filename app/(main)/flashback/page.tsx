@@ -21,7 +21,6 @@ export default function Nexathon() {
 
   // 1. Mouse Trail Animation (Disabled on Mobile/Touch)
   useEffect(() => {
-    // Prevent running on touch devices or small screens
     if (window.matchMedia('(max-width: 768px)').matches || 'ontouchstart' in window) {
       return;
     }
@@ -81,11 +80,13 @@ export default function Nexathon() {
     return () => heroEl.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // 2. Stats & Bento Fade-In Animation (Unchanged, works great)
+  // 2. Stats & Bento Fade-In Animation
+  // 2. Stats & Bento Fade-In Animation (Trigger when scrolled into view)
   useEffect(() => {
     if (!statsRef.current) return;
 
     const ctx = gsap.context(() => {
+      // Numbers animate karne ka function
       const animateCount = (el: Element) => {
         const target = parseFloat(el.getAttribute('data-target') || '0');
         const suffix = el.getAttribute('data-suffix') || '';
@@ -105,31 +106,36 @@ export default function Nexathon() {
         });
       };
 
-      gsap.set('.bento-cell', { opacity: 0, y: 28 });
+      // Bento cells ka entrance animation
+      gsap.set('.bento-cell', { opacity: 0, y: 40 });
 
+      // Bento Grid ke liye main trigger
       ScrollTrigger.create({
-        trigger: statsRef.current,
-        start: 'top 70%',
-        once: true,
+        trigger: ".bento", // Jab bento grid dikhe tab cells aayein
+        start: 'top 85%', 
         onEnter: () => {
           gsap.to('.bento-cell', {
             opacity: 1,
             y: 0,
-            duration: 0.9,
+            duration: 0.8,
+            stagger: 0.15,
             ease: 'power3.out',
-            stagger: 0.1,
             onStart: () => {
-              gsap.utils.toArray('.count-up').forEach((el) => animateCount(el as Element));
-            },
+              // Har number ko individually trigger karenge
+              gsap.utils.toArray('.count-up').forEach((el) => {
+                animateCount(el as Element);
+              });
+            }
           });
         },
+        once: true 
       });
+
     }, statsRef);
 
     return () => ctx.revert();
   }, []);
-
-  // 3. Infinite Ticker Animation (Updated for dynamic width)
+  // 3. Infinite Ticker Animation
   useEffect(() => {
     const track = tickerTrackRef.current;
     if (!track) return;
@@ -138,7 +144,6 @@ export default function Nexathon() {
     let animationFrameId: number;
     let totalWidth = 0;
 
-    // Calculate the dynamic width of exactly ONE set of sponsors
     const calculateWidth = () => {
       const cards = track.querySelectorAll('.sponsor-card');
       if (cards.length > 0) {
@@ -155,10 +160,10 @@ export default function Nexathon() {
     window.addEventListener('resize', calculateWidth);
 
     const tick = () => {
-      if (totalWidth === 0) return; // Wait until width is calculated
+      if (totalWidth === 0) return;
       x -= 0.8;
       if (x <= -totalWidth) {
-        x += totalWidth; // Seamless jump back
+        x += totalWidth;
       }
       track.style.transform = `translateX(${x}px)`;
       animationFrameId = requestAnimationFrame(tick);
@@ -182,7 +187,7 @@ export default function Nexathon() {
 
         <div id="trail-container" ref={trailContainerRef}></div>
 
-        <h1 style={{fontSize: "10rem"}}className="hero-word">NEXATHON</h1>
+        <h1 style={{fontSize: "9rem"}} className="hero-word">NEXATHON</h1>
 
         <p className="hero-edition">Flashback — Version 1</p>
 
@@ -202,11 +207,54 @@ export default function Nexathon() {
 
       <section id="stats" ref={statsRef}>
 
-        <div className="stats-bg-text">N1</div>
-
-
+        <div className="stats-bg-text">N2</div>
 
         <div className="stats-inner">
+
+          {/* ── ABOUT / NEVERON BLOCK ── */}
+
+          <div className="about-block">
+
+            <div className="stats-eyebrow">
+
+              <div className="eyebrow-line"></div>
+
+              <span className="eyebrow-text">Who we are</span>
+
+            </div>
+
+            <div className="about-grid">
+
+              <div className="about-left">
+
+                <h2 className="about-headline">
+                  Built on<br />
+                  <span className="ghost">community,</span><br />
+                  scaling with tech.
+                </h2>
+
+              </div>
+
+              <div className="about-right">
+
+                <p className="about-para">
+                  <span className="about-highlight">NEVERON</span> is a technology-driven solutions company delivering end-to-end software, digital, and AI services — helping individuals, startups, and businesses transform ideas into scalable, high-performance products. Built on the strong foundation of our earlier initiative, <span className="about-highlight">Nexus The AI Society</span>, our team has consistently worked at the intersection of technology and community, organizing AI workshops, hands-on sessions, speaker events, and over 4 hackathons, along with large-scale flagship events featuring Shark Tank pitchers.
+                </p>
+
+                <p className="about-para">
+                  This experience has shaped a team that understands not just development, but execution, scale, and real-world impact. Now evolved into NEVERON, we are entering a new phase focused on building advanced AI solutions, scalable SaaS products, and high-quality digital systems, while also continuing to foster innovation through our Events and Hackathons division.
+                </p>
+
+                <p className="about-para about-para--cta">
+                  As a step forward in this journey, we are preparing to launch{' '}
+                  <span className="about-highlight">NEXATHON V2</span> — our first major event under the new identity, marking the beginning of a larger vision to build both cutting-edge technology and a strong innovation ecosystem, driven by a mission to deliver reliable, intelligent, and future-ready solutions that create meaningful impact.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
 
           <div className="stats-header">
 
@@ -387,8 +435,6 @@ export default function Nexathon() {
         <div className="ticker-outer">
 
           <div className="ticker-track" ref={tickerTrackRef}>
-
-            {/* Render the list twice to create a seamless infinite loop */}
 
             {[...SPONSORS, ...SPONSORS].map((sponsor, index) => (
 

@@ -61,7 +61,7 @@ export default function NexathonPage() {
       let animFrameId: number;
 
       const initScrollAnimations = () => {
-        gsap.set('.seeking', { x: isMobile ? -200 : -500, opacity: 0 });
+        gsap.set('.seeking', { x: isMobile ? -200 : -400, opacity: 0 });
         gsap.set('.talent',  { x: isMobile ? 200 : 500,  opacity: 0 });
         gsap.set('.real-tag', {
           opacity: 0,

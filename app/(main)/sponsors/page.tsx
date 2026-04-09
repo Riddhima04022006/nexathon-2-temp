@@ -27,7 +27,7 @@ export default function Page() {
       >
         Sponsors Will Be
         <br />
-        Shown Here
+        Announced Soon
       </h2>
 
       <div
