@@ -91,7 +91,8 @@ export default function TeamPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/40 to-transparent" />
       </div>
 
-      <div className="relative z-30 w-full max-w-[1400px] h-screen flex flex-col lg:flex-row px-4 lg:px-8 overflow-hidden">        <div className="w-full lg:w-[200px] flex flex-col items-start pt-10 lg:py-20 h-auto lg:h-[90vh] z-50">
+      <div className="relative z-30 w-full max-w-[1400px] h-full flex flex-col lg:flex-row px-4 lg:px-8 transform -translate-y-[20px] md:-translate-y-[30px]">      
+        <div className="w-full lg:w-[200px] flex flex-col items-start pt-10 lg:py-20 h-auto lg:h-[90vh] z-50">
           <h1 className="text-[10px] lg:text-sm font-serif font-bold tracking-[0.3em] lg:tracking-[0.4em] text-white uppercase mb-5 lg:mb-8 pl-10 lg:pl-2 whitespace-nowrap">CAST AND CREW</h1>
           <div className="flex flex-row lg:flex-col items-center gap-2 h-full w-full relative z-[100]">
             <button onClick={() => scroll("up")} className="p-1.5 lg:p-2 opacity-40 hover:opacity-100 transition-opacity z-[110] shrink-0">
@@ -114,8 +115,7 @@ export default function TeamPage() {
           
           <div className="hidden md:block lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-end lg:pr-40 z-10 pointer-events-none">
             <AnimatePresence mode="wait">
-              <motion.div key={activeId} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.8 }} 
-                className="relative w-[280px] h-[350px] md:w-[350px] md:h-[450px] md:!-translate-x-[-150px] md:-top-20 xl:w-[550px] xl:h-[650px] xl:!translate-x-24 xl:top-0 xl:translate-y-[-40px]">
+              <motion.div key={activeId} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.8 }} className="relative w-[300px] h-[400px] md:w-[400px] md:h-[500px] md:!-translate-x-[-150px] xl:w-[650px] xl:h-[750px] xl:!translate-x-24 -mt-20">
                 <Image src={activeMember.image} alt={activeMember.name} fill className="object-contain" priority />
               </motion.div>
             </AnimatePresence>
@@ -129,10 +129,10 @@ export default function TeamPage() {
             </AnimatePresence>
           </div>
 
-          <div className="relative z-20 w-full flex flex-col items-center md:items-start md:pl-8 lg:pl-0 lg:mt-[180px]">
+          <div className="relative z-20 w-full flex flex-col items-center md:items-start md:pl-8 lg:pl-0 lg:mt-0">
             <AnimatePresence mode="wait">
               <motion.div key={activeId} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.6, delay: 0.2 }} className="max-w-xl text-center md:text-left drop-shadow-2xl px-2">
-                <h2 className={`${ethnocentric.className} text-3xl md:text-4xl lg:text-7xl font-bold text-white mb-2 lg:mt-20 uppercase tracking-tighter`}>
+                <h2 className={`${ethnocentric.className} text-3xl md:text-4xl lg:text-7xl font-bold text-white mb-2 uppercase tracking-tighter`}>
                   <span className="relative px-2 py-0.5">{activeMember.name}</span>
                 </h2>
                 
