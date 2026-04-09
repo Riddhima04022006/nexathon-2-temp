@@ -136,7 +136,7 @@ export default function TeamPage() {
                   {activeMember.description}
                 </p>
 
-                <div className="flex items-center justify-center md:justify-start gap-6 mt-4 md:-mt-10 lg:mt-4 relative left-5">
+                <div className="flex items-center justify-center md:justify-start gap-6 mt-4 md:-mt-10 lg:mt-4 relative w-full left-0 md:left-5">
                   {activeMember.linkedin && (
                     <a href={activeMember.linkedin} target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-cyan-400 transition-all">
                       <Linkedin size={18} className="lg:w-6 lg:h-6" />
