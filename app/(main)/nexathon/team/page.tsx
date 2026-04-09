@@ -8,10 +8,11 @@ import { DM_Mono } from "next/font/google";
 
 <style jsx global>{`
   html, body {
-    overflow: hidden;
-    height: 100%;
+    overflow: hidden !important;
+    height: 100% !important;
+    width: 100% !important;
     position: fixed;
-    width: 100%;
+    touch-action: none; /* Mobile scroll block karne ke liye */
   }
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -84,14 +85,13 @@ export default function TeamPage() {
   };
 
   return (
-    <main className="h-screen w-screen bg-[#050505] text-white flex items-center justify-center overflow-hidden relative fixed inset-0">
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+    <main className="fixed inset-0 w-screen h-screen bg-[#050505] text-white flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <Image src={backgroundImage} alt="Background" fill className="object-cover opacity-100" priority />
         <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/40 to-transparent" />
       </div>
 
-      <div className="relative z-30 w-full max-w-[1400px] h-full flex flex-col lg:flex-row px-4 lg:px-8">
-        <div className="w-full lg:w-[200px] flex flex-col items-start pt-10 lg:py-20 h-auto lg:h-[90vh] z-50">
+      <div className="relative z-30 w-full max-w-[1400px] h-screen flex flex-col lg:flex-row px-4 lg:px-8 overflow-hidden">        <div className="w-full lg:w-[200px] flex flex-col items-start pt-10 lg:py-20 h-auto lg:h-[90vh] z-50">
           <h1 className="text-[10px] lg:text-sm font-serif font-bold tracking-[0.3em] lg:tracking-[0.4em] text-white uppercase mb-5 lg:mb-8 pl-10 lg:pl-2 whitespace-nowrap">CAST AND CREW</h1>
           <div className="flex flex-row lg:flex-col items-center gap-2 h-full w-full relative z-[100]">
             <button onClick={() => scroll("up")} className="p-1.5 lg:p-2 opacity-40 hover:opacity-100 transition-opacity z-[110] shrink-0">
@@ -110,10 +110,12 @@ export default function TeamPage() {
           </div>
         </div>
 
-        <div className="flex-1 relative flex flex-col items-center md:flex-row lg:items-start justify-start lg:pl-16 pt-0 lg:pt-20">          
+        <div className="flex-1 relative flex flex-col items-center md:flex-row lg:items-start justify-center md:justify-start lg:pl-16">
+          
           <div className="hidden md:block lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-end lg:pr-40 z-10 pointer-events-none">
             <AnimatePresence mode="wait">
-              <motion.div key={activeId} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.8 }} className="relative w-[280px] h-[350px] md:w-[350px] md:h-[450px] md:!-translate-x-[-150px] md:-top-40 xl:w-[550px] xl:h-[650px] xl:!translate-x-24 xl:-top-32">
+              <motion.div key={activeId} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.8 }} 
+                className="relative w-[280px] h-[350px] md:w-[350px] md:h-[450px] md:!-translate-x-[-150px] md:-top-20 xl:w-[550px] xl:h-[650px] xl:!translate-x-24 xl:top-0 xl:translate-y-[-40px]">
                 <Image src={activeMember.image} alt={activeMember.name} fill className="object-contain" priority />
               </motion.div>
             </AnimatePresence>
@@ -126,7 +128,7 @@ export default function TeamPage() {
               </motion.div>
             </AnimatePresence>
           </div>
- 
+
           <div className="relative z-20 w-full flex flex-col items-center md:items-start md:pl-8 lg:pl-0 lg:mt-[180px]">
             <AnimatePresence mode="wait">
               <motion.div key={activeId} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.6, delay: 0.2 }} className="max-w-xl text-center md:text-left drop-shadow-2xl px-2">
