@@ -53,7 +53,19 @@ const CreditsPage: React.FC = () => {
           opacity: 0;
           z-index: 10;
         }
-        .model-card:hover .scan-line {
+
+        /* Mobile & Desktop highlight fix */
+        .model-card {
+          transition: all 0.3s ease;
+          -webkit-tap-highlight-color: transparent;
+        }
+        
+        .model-card:hover, .model-card:active {
+          background-color: rgba(255, 215, 0, 0.05) !important;
+          border-color: rgba(255, 215, 0, 0.4) !important;
+        }
+
+        .model-card:hover .scan-line, .model-card:active .scan-line {
           opacity: 1;
           animation: scanLine 3s linear infinite;
         }
@@ -170,7 +182,7 @@ const CreditsPage: React.FC = () => {
 
 const ModelCard: React.FC<{ name: string; creator: string; link: string; delay: string; modified?: boolean; children: React.ReactNode; }> = ({ name, creator, link, delay, modified, children }) => {
   return (
-    <div className="group model-card w-full h-full relative overflow-hidden bg-white/[0.03] border border-white/10 rounded-xl p-6 transition-all hover:border-[#ffd700]/40 hover:bg-[#ffd700]/5 animate-fadeInUp flex flex-col items-center text-center" style={{ animationDelay: delay }}>
+    <div className="group model-card w-full h-full relative overflow-hidden bg-white/[0.03] border border-white/10 rounded-xl p-6 animate-fadeInUp flex flex-col items-center text-center cursor-pointer" style={{ animationDelay: delay }}>
       <div className="scan-line" />
       {children}
       <div className="ethno-heading text-[15px] md:text-[17px] text-[#ffd700] mb-3 leading-tight">
