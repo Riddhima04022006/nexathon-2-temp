@@ -401,8 +401,8 @@ export default function NexathonPage() {
         .nav-links a:hover { color: var(--white); }
 
         .hero {
-          height: 100vh;
-          max-height: 100vh;
+          height: 100dvh;
+          max-height: 100dvh;
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
@@ -454,12 +454,12 @@ export default function NexathonPage() {
         }
 
         .hero-title {
-          font-family: var(--font-ethnocentric), 'Playfair Display', serif;
+          font-family: 'Playfair Display', serif;
           font-size: clamp(3.5rem, 10vw, 11rem);
           font-weight: 900;
           line-height: 0.88;
           letter-spacing: -0.02em;
-          margin-bottom: 32px;
+          margin-bottom: 56px;
         }
 
         .hero-you-outline {
