@@ -5,7 +5,26 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Nexathon.css';
 import { CompanyArchive } from '../../../components/Sponsors';
+import img2 from './src/assets/image2.jpeg';
+import img3 from './src/assets/image3.jpeg';
+import img4 from './src/assets/image4.jpeg';
+import img5 from './src/assets/image5.png';
+import img6 from './src/assets/image6.png';
+import img7 from './src/assets/image7.png';
+import img8 from './src/assets/image8.png';
+import img9 from './src/assets/image9.png';
+import img10 from './src/assets/image10.png';
+import img11 from './src/assets/image11.png';
+import img12 from './src/assets/image12.png';
+import img13 from './src/assets/image13.png';
+import img14 from './src/assets/image14.png';
+import img15 from './src/assets/image15.png';
 
+const imageUrls = [
+  img2.src, img3.src, img4.src, img5.src, img6.src, 
+  img7.src, img8.src, img9.src, img10.src, img11.src, 
+  img12.src, img13.src, img14.src, img15.src
+];
 gsap.registerPlugin(ScrollTrigger);
 
 const SPONSORS = CompanyArchive().map(company => ({
@@ -31,11 +50,6 @@ export default function Nexathon() {
 
     let trailIdx = 0;
     let lastMouse = { x: -999, y: -999 };
-    const imageUrls = [
-      'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=500&q=70',
-      'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&q=70',
-      'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=500&q=70',
-    ];
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = heroEl.getBoundingClientRect();

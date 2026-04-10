@@ -107,36 +107,69 @@ export default function NexathonPage() {
           .to('.content-reveal', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.95)
           .to('.reveal-item', { opacity: 1, y: 0, stagger: 0.15, duration: 0.4, ease: 'sine.out' }, 1.1);
 
-        gsap.set('.round-content-wrapper', { height: 0, opacity: 0 });
+        // ── ROUNDS: on mobile use scroll-triggered fade+slide per card (no pin) ──
+        if (isMobile) {
+          const cards = [
+            { card: '#card-1', content: '#content-1' },
+            { card: '#card-2', content: '#content-2' },
+            { card: '#card-3', content: '#content-3' },
+          ];
 
-        const roundsTL = gsap.timeline({
-          scrollTrigger: {
-            trigger: '.rounds-outer',
-            start: 'top top',
-            end: '+=180%',
-            pin: true,
-            scrub: 0.6,
-            invalidateOnRefresh: true,
-          },
-        });
+          // Start all cards hidden
+          cards.forEach(({ card, content }) => {
+            gsap.set(card, { opacity: 0, y: 40 });
+            gsap.set(content, { height: 'auto', opacity: 0 });
+          });
 
-        roundsTL
-          .to('#content-1', { height: 'auto', opacity: 1, duration: 0.1 })
-          .set('#card-1', { className: 'round-card-pinned active' }, '<')
-          
-          .to({}, { duration: 0.6 }) 
-          .to('#content-1', { height: 0, opacity: 0, duration: 0.6 })
-          .set('#card-1', { className: 'round-card-pinned' }, '<')
-          .set('#card-2', { className: 'round-card-pinned active' }, '<')
-          .to('#content-2', { height: 'auto', opacity: 1, duration: 0.6 }, '<')
-          
-          .to({}, { duration: 0.6 }) 
-          .to('#content-2', { height: 0, opacity: 0, duration: 0.6 })
-          .set('#card-2', { className: 'round-card-pinned' }, '<')
-          .set('#card-3', { className: 'round-card-pinned active' }, '<')
-          .to('#content-3', { height: 'auto', opacity: 1, duration: 0.6 }, '<')
-          
-          .to({}, { duration: 0.6 }); 
+          // Reveal each card as it enters viewport
+          cards.forEach(({ card, content }, i) => {
+            ScrollTrigger.create({
+              trigger: card,
+              start: 'top 85%',
+              once: true,
+              onEnter: () => {
+                gsap.to(card, {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.55,
+                  delay: i * 0.08,
+                  ease: 'power2.out',
+                  onComplete: () => {
+                    gsap.set(card, { className: 'round-card-pinned active' });
+                    gsap.to(content, { opacity: 1, duration: 0.4, ease: 'power1.out' });
+                  },
+                });
+              },
+            });
+          });
+        } else {
+          const roundsTL = gsap.timeline({
+            scrollTrigger: {
+              trigger: '.rounds-outer',
+              start: 'top top',
+              end: '+=180%',
+              pin: true,
+              scrub: 0.6,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          gsap.set('#card-1', { className: 'round-card-pinned active' });
+          gsap.set('#content-1', { height: 'auto', opacity: 1 });
+
+          roundsTL
+            .to({}, { duration: 0.6 })
+            .to('#content-1', { height: 0, opacity: 0, duration: 0.6 })
+            .to('#card-1', { className: 'round-card-pinned', duration: 0.1 }, '<')
+            .to('#card-2', { className: 'round-card-pinned active', duration: 0.1 }, '<')
+            .to('#content-2', { height: 'auto', opacity: 1, duration: 0.6 }, '<')
+            .to({}, { duration: 0.6 })
+            .to('#content-2', { height: 0, opacity: 0, duration: 0.6 })
+            .to('#card-2', { className: 'round-card-pinned', duration: 0.1 }, '<')
+            .to('#card-3', { className: 'round-card-pinned active', duration: 0.1 }, '<')
+            .to('#content-3', { height: 'auto', opacity: 1, duration: 0.6 }, '<');
+        }
+
         const timelineTL = gsap.timeline({
           scrollTrigger: {
             trigger: '#timeline',
@@ -639,6 +672,8 @@ export default function NexathonPage() {
         .feature-list h4 { font-size: 1rem; color: var(--white); font-weight: 500; margin-bottom: 8px; }
         .feature-list p  { color: var(--dim); font-size: 0.88rem; line-height: 1.6; }
         .feature-list li + li { margin-top: 30px; }
+
+        /* ── ROUNDS: desktop styles (unchanged) ── */
         .rounds-outer { position: relative; background: var(--surface); }
         .rounds-sticky-wrapper {
           display: grid;
@@ -653,9 +688,48 @@ export default function NexathonPage() {
           -webkit-backface-visibility: hidden;
         }
 
+        /* ── ROUNDS: mobile overrides — flat, no pin, no GPU tricks ── */
         @media (max-width: 900px) {
-          .rounds-sticky-wrapper { grid-template-columns: 1fr; }
+          .rounds-outer {
+            /* Remove the 180vh extra space added by GSAP pinning */
+            height: auto !important;
+          }
+          .rounds-sticky-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: auto !important;
+            overflow: visible !important;
+            transform: none !important;
+            -webkit-transform: none !important;
+            will-change: auto !important;
+            backface-visibility: visible !important;
+            -webkit-backface-visibility: visible !important;
+          }
           .rounds-left { display: none; }
+          .rounds-right {
+            padding: 48px 24px 64px !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+          }
+          /* On mobile all cards are always expanded — no GSAP height animation */
+          .round-card-pinned {
+            transform: none !important;
+            backface-visibility: visible !important;
+            -webkit-backface-visibility: visible !important;
+            /* Remove the transition that fires on every scroll tick */
+            transition: none !important;
+          }
+          .round-content-wrapper {
+            /* Override GSAP height:0 — always visible on mobile */
+            height: auto !important;
+            overflow: visible !important;
+            opacity: 1 !important;
+          }
+          /* Titles always white on mobile, no size jump */
+          .round-title {
+            color: var(--white) !important;
+          }
         }
 
         .round-card-pinned {
@@ -681,7 +755,12 @@ export default function NexathonPage() {
         }
         .round-card-pinned.active .round-title {
           color: var(--white);
-          font-size: clamp(1.4rem, 3.5vw, 2.8rem);
+        }
+
+        @media (max-width: 900px) {
+          .round-card-pinned.active .round-title {
+            font-size: clamp(1.2rem, 2.5vw, 2.4rem);
+          }
         }
 
         .round-content-wrapper { height: 0; overflow: hidden; opacity: 0; }
@@ -699,10 +778,6 @@ export default function NexathonPage() {
           padding-top: 50px;
         }
         .rounds-right { display: flex; flex-direction: column; justify-content: center; padding: 0 80px; }
-
-        @media (max-width: 768px) {
-          .rounds-right { padding: 0 24px; }
-        }
 
         .timeline-section { width: 100%; padding: 120px 0; border-top: 1px solid var(--border); }
         .timeline-header { padding: 0 80px; margin-bottom: 60px; }
