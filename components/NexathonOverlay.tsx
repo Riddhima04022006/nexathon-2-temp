@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Image from "next/image";
 
+// Assets Imports
 import Bhuwan from "../app/(main)/nexathon/assets/Icon_Bhuwan.png";
 import Devit from "../app/(main)/nexathon/assets/Icon_Devit.png";
 import Dheeraj from "../app/(main)/nexathon/assets/Icon_Dheeraj.png";
@@ -102,6 +103,7 @@ export default function NexathonOverlay() {
 
         .responsive-page { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: flex-start; padding: 1.5rem 9vw; box-sizing: border-box; pointer-events: none; }
         .justify-right { justify-content: flex-end; }
+        .justify-center { justify-content: center; }
         
         .responsive-card { max-width: 680px; width: 100%; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); padding: clamp(1.5rem, 5vw, 3rem); border-radius: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.1); text-align: left; position: relative; z-index: 10; pointer-events: auto; }
         .v1-card { max-width: 600px; }
@@ -129,14 +131,13 @@ export default function NexathonOverlay() {
             Nexathon is an interstellar journey where innovators push the boundaries of the digital universe. More than a hackathon, it is a high-intensity engineering launchpad designed to ignite ideas, build stellar projects, and accelerate the future.
           </p>
           <div className="btn-container" style={{ position: 'relative', display: 'inline-block' }}>
-            <button style={primaryButtonStyle} onClick={() => triggerToast('reg', "Registration isn't open yet")}>Register Now</button>
-            <AnimatePresence>
-              {activeToast?.id === 'reg' && (
-                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} className="toast-popup">
-                  {activeToast.message}
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {/* Updated Button to redirect without toast */}
+            <button 
+              style={primaryButtonStyle} 
+              onClick={() => window.open("https://discord.gg/D5Wkz9ZWs", "_blank")}
+            >
+              Join the Community
+            </button>
           </div>
         </motion.div>
       </div>
@@ -195,6 +196,76 @@ export default function NexathonOverlay() {
           </div>
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1.5rem' }}>
             <button style={primaryButtonStyle} onClick={() => router.push('/nexathon/team')}>View All Members</button>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* SECTION 5: CREDITS (PLAIN BLACK BACKGROUND) */}
+      <div className="responsive-page justify-center" style={{ background: '#000000', pointerEvents: 'auto' }}>
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }} 
+          whileInView={{ opacity: 1, y: 0 }} 
+          transition={{ duration: 1 }} 
+          className="responsive-card" 
+          style={{ 
+            background: 'transparent', 
+            border: 'none', 
+            backdropFilter: 'none', 
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+          }}
+        >
+          <p style={{ fontFamily: '"DM Mono", monospace', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.4em', textTransform: 'uppercase', fontSize: '11px', marginBottom: '1.5rem' }}>
+            PROJECT ATTRIBUTIONS
+          </p>
+          <h2 className="sub-heading" style={{ fontSize: 'clamp(1.8rem, 5vw, 4rem)', marginBottom: '1rem' }}>
+            Credits
+          </h2>
+          <p style={{ 
+            fontFamily: '"DM Mono", monospace', 
+            color: 'rgba(255,255,255,0.6)', 
+            fontSize: 'clamp(0.8rem, 1.5vw, 0.95rem)', 
+            lineHeight: 1.8, 
+            marginBottom: '3rem', 
+            maxWidth: '550px' 
+          }}>
+            This journey is powered by the creativity of the global developer community. 
+            View the 3D artists and open-source assets that bring Nexathon to life.
+          </p>
+          <p style={{ 
+            fontFamily: '"DM Mono", monospace', 
+            color: 'rgba(255,255,255,0.6)', 
+            fontSize: 'clamp(0.8rem, 1.5vw, 0.95rem)', 
+            lineHeight: 1.8, 
+            marginBottom: '3rem', 
+            maxWidth: '550px' 
+          }}>
+            Models: Death Star 2, Millennium Falcon, Imperial Shuttle - by respective creators on Sketchfab (CC BY 4.0)
+          </p>
+          
+          <div className="btn-container">
+            <button 
+              style={{ 
+                ...primaryButtonStyle, 
+                background: 'transparent', 
+                border: '1px solid rgba(255,255,255,0.8)', 
+                color: '#fff',
+                padding: '0.8rem 2.5rem'
+              }} 
+              onClick={() => router.push('/nexathon/credits')}
+              onMouseEnter={(e) => { 
+                e.currentTarget.style.background = '#fff'; 
+                e.currentTarget.style.color = '#000'; 
+              }}
+              onMouseLeave={(e) => { 
+                e.currentTarget.style.background = 'transparent'; 
+                e.currentTarget.style.color = '#fff'; 
+              }}
+            >
+              Explore Credits
+            </button>
           </div>
         </motion.div>
       </div>

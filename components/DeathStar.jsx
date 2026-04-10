@@ -1,13 +1,23 @@
 "use client";
 
-import { useRef, Suspense } from 'react'; 
+import { useRef, Suspense, useEffect } from 'react'; 
 import { Canvas, useFrame } from '@react-three/fiber';
-// 1. Import OrbitControls so you can zoom with your mouse
-import { useGLTF, Center, OrbitControls } from '@react-three/drei'; 
+import { useGLTF, Center, Environment } from '@react-three/drei';
 
 function StarModel() {
   const { scene } = useGLTF('/models/death-star.glb'); 
   const modelRef = useRef();
+
+  useEffect(() => {
+    if (!scene) return;
+    scene.traverse((child) => {
+      if (child.isMesh && child.material) {
+        child.material.metalness = 0.8;
+        child.material.roughness = 0.25;
+        child.material.needsUpdate = true;
+      }
+    });
+  }, [scene]);
 
   useFrame(() => {
     if (modelRef.current) {
@@ -19,8 +29,9 @@ function StarModel() {
     <Center> 
       <primitive 
         object={scene} 
-        ref={modelRef} 
-        scale={0.07} 
+        ref={modelRef}
+        rotation={[0, Math.PI, 0]}
+        scale={0.0009} 
       />
     </Center>
   );
@@ -29,16 +40,23 @@ function StarModel() {
 export default function DeathStar() {
   return (
     <Canvas 
-      // 3. Pull the camera back to a distance of 10
-      camera={{ position: [0, 0, 10], fov: 45 }} 
-      gl={{ alpha: true, antialias: false }}
+      camera={{ position: [0, 0, 14], fov: 45 }}
+      gl={{ alpha: true, antialias: true }}
       style={{ width: '100%', height: '100%' }}
     >
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[5, 5, 5]} intensity={1.5} color="#ffffff" />
-      
-      {/* 4. Add the controls! */}
-      {/* <OrbitControls enableZoom={true} enablePan={false} /> */}
+      <Environment
+        preset="night"
+        background={false}
+        environmentIntensity={0.02}
+      />
+
+      <ambientLight intensity={1.25} />
+
+      <directionalLight
+        position={[25, 45, -5]}
+        intensity={1.5}
+        color="#ffffff"
+      />
 
       <Suspense fallback={null}>
         <StarModel />

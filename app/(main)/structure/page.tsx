@@ -2,6 +2,13 @@
 
 import { useEffect, useRef } from 'react';
 import type { Group } from 'three';
+import localFont from 'next/font/local';
+
+const ethnocentric = localFont({
+  src: '../../fonts/Ethnocentric-Regular.otf',
+  variable: '--font-ethnocentric',
+  display: 'swap',
+});
 
 export default function NexathonPage() {
   const toastRef = useRef<HTMLDivElement>(null);
@@ -100,7 +107,6 @@ export default function NexathonPage() {
           .to('.content-reveal', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.95)
           .to('.reveal-item', { opacity: 1, y: 0, stagger: 0.15, duration: 0.4, ease: 'sine.out' }, 1.1);
 
-        // FIX 4: Reduced scroll from +=300% to +=180% so rounds section feels tighter
         const roundsTL = gsap.timeline({
           scrollTrigger: {
             trigger: '.rounds-outer',
@@ -251,13 +257,39 @@ export default function NexathonPage() {
     };
   }, []);
 
-  const handleRegisterClick = () => {
+  // Timeline node date tooltip handler
+  const handleNodeInteraction = (date: string) => {
     const toast = toastRef.current;
     if (!toast) return;
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    toast.textContent = date;
     toast.classList.add('show');
-    toastTimerRef.current = setTimeout(() => toast.classList.remove('show'), 2800);
+    toastTimerRef.current = setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => { if (toastRef.current) toastRef.current.textContent = ''; }, 300);
+    }, 2800);
   };
+
+  // Attach touch events for mobile nodes
+  useEffect(() => {
+    const nodes = [
+      { id: 'node-reg', date: '19 April 2026: Registration' },
+      { id: 'node-r1',  date: '25 April 2026: Round 1' },
+      { id: 'node-r2',  date: '26 April 2026: Round 2' },
+      { id: 'node-r3',  date: '9 May 2026: Round 3' },
+      { id: 'node-eval',date: 'Round 4: Will Be Revealed Soon' },
+    ];
+    const handlers: { el: HTMLElement; fn: (e: Event) => void }[] = [];
+    nodes.forEach(({ id, date }) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const fn = (e: Event) => { e.preventDefault(); handleNodeInteraction(date); };
+      el.addEventListener('touchend', fn, { passive: false });
+      handlers.push({ el, fn });
+    });
+    return () => { handlers.forEach(({ el, fn }) => el.removeEventListener('touchend', fn)); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -308,11 +340,10 @@ export default function NexathonPage() {
           overflow-x: visible !important;
         }
 
-        /* ─── FIX 3: Navbar moved to LEFT side ─── */
         .nexathon-nav {
           position: fixed;
           top: 0;
-          left: 0;   /* was: right: 0 */
+          left: 0;
           bottom: 0;
           width: 80px;
           z-index: 1000;
@@ -336,7 +367,6 @@ export default function NexathonPage() {
           text-transform: uppercase;
           color: var(--muted);
           text-decoration: none;
-          /* FIX 3: flip writing direction so text reads top-to-bottom on left side */
           writing-mode: vertical-rl;
           transform: rotate(180deg);
           transition: color 0.3s;
@@ -371,18 +401,19 @@ export default function NexathonPage() {
         .nav-links a:hover { color: var(--white); }
 
         .hero {
-          min-height: 100vh;
+          height: 100vh;
+          max-height: 100vh;
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
-          /* FIX 3: Added left padding to clear the left navbar (80px wide) */
-          padding: 60px 100px 100px 100px;
+          padding: 40px 100px 60px 100px;
           position: relative;
           overflow: hidden;
         }
 
         @media (max-width: 768px) {
-          .hero { padding: 40px 24px 100px 24px; justify-content: center; }
+          .hero { padding: 24px 24px 80px 24px; justify-content: flex-end; }
+          .rounds-left{transform:translateX(-10%);border-right:0px !important;}
         }
 
         #canvas-container {
@@ -423,12 +454,12 @@ export default function NexathonPage() {
         }
 
         .hero-title {
-          font-family: 'Playfair Display', serif;
+          font-family: var(--font-ethnocentric), 'Playfair Display', serif;
           font-size: clamp(3.5rem, 10vw, 11rem);
           font-weight: 900;
           line-height: 0.88;
           letter-spacing: -0.02em;
-          margin-bottom: 56px;
+          margin-bottom: 32px;
         }
 
         .hero-you-outline {
@@ -474,6 +505,7 @@ export default function NexathonPage() {
           position: relative;
           overflow: hidden;
           transition: color 0.3s, border-color 0.3s;
+          text-decoration: none;
         }
 
         .register-btn::before {
@@ -518,7 +550,6 @@ export default function NexathonPage() {
           transform: translateX(-50%) translateY(0);
         }
 
-        /* ─── FIX 1: Purpose section — proper centering for heading-group ─── */
         .purpose-wrapper {
           position: relative;
           background: var(--bg);
@@ -551,9 +582,6 @@ export default function NexathonPage() {
           font-size: clamp(3rem, 10vw, 9rem);
           text-transform: uppercase;
           line-height: 1;
-          /* Kept as original — GSAP animates x/y from off-screen to 0,0.
-             heading-group flex centers the natural in-flow position (x=0,y=0).
-             Adding top/left/transform here would conflict with GSAP's x/y. */
           position: absolute;
           letter-spacing: -0.05em;
           white-space: nowrap;
@@ -607,33 +635,70 @@ export default function NexathonPage() {
         .feature-list h4 { font-size: 1rem; color: var(--white); font-weight: 500; margin-bottom: 8px; }
         .feature-list p  { color: var(--dim); font-size: 0.88rem; line-height: 1.6; }
         .feature-list li + li { margin-top: 30px; }
-
         .rounds-outer { position: relative; background: var(--surface); }
-        .rounds-sticky-wrapper { display: grid; grid-template-columns: 0.8fr 1.2fr; height: 100vh; width: 100%; overflow: clip; }
+        .rounds-sticky-wrapper {
+          display: grid;
+          grid-template-columns: 0.8fr 1.2fr;
+          height: 100vh;
+          width: 100%;
+          overflow: clip;
+          -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+          will-change: transform;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+        }
 
         @media (max-width: 900px) {
           .rounds-sticky-wrapper { grid-template-columns: 1fr; }
           .rounds-left { display: none; }
         }
 
-        .rounds-left { display: flex; flex-direction: column; justify-content: center; padding-left: 80px; border-right: 1px solid var(--border); }
-        .rounds-left h2 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 5vw, 5rem); line-height: 1; font-weight: 900; padding-top: 50px; }
-        .rounds-right { display: flex; flex-direction: column; justify-content: center; padding: 0 80px; }
-
-        @media (max-width: 768px) {
-          .rounds-right { padding: 0 24px; }
+        .round-card-pinned {
+          border-bottom: 1px solid var(--border);
+          padding: 20px 0;
+          width: 100%;
+          transition: all 0.4s ease-out;
+          -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
         }
 
-        .round-card-pinned { border-bottom: 1px solid var(--border); padding: 20px 0; width: 100%; transition: all 0.4s ease-out; }
         .round-card-pinned:last-child { border-bottom: none; }
-        .round-title { font-family: 'Playfair Display', serif; font-size: clamp(1.9rem, 3vw, 2.5rem); font-weight: 700; line-height: 1.1; color: var(--muted); transition: color 0.4s ease, font-size 0.4s ease; margin-bottom: 8px; }
-        .round-card-pinned.active .round-title { color: var(--white); font-size: clamp(1.8rem, 4vw, 3.2rem); }
+        .round-title {
+          font-family: var(--font-ethnocentric), 'Playfair Display', serif;
+          font-size: clamp(1.2rem, 2.5vw, 2.4rem);
+          font-weight: normal;
+          line-height: 1.1;
+          color: var(--muted);
+          transition: color 0.4s ease, font-size 0.4s ease;
+          margin-bottom: 8px;
+        }
+        .round-card-pinned.active .round-title {
+          color: var(--white);
+          font-size: clamp(1.4rem, 3.5vw, 2.8rem);
+        }
 
         .round-content-wrapper { height: 0; overflow: hidden; opacity: 0; }
         .round-subtitle { font-size: 1rem; font-weight: 300; font-style: italic; color: var(--muted); margin: 10px 0 20px; }
         .round-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
         .round-list li { display: flex; align-items: center; gap: 12px; font-size: 0.95rem; color: var(--muted); line-height: 1.5; }
         .round-bullet { display: block; width: 5px; height: 5px; min-width: 5px; min-height: 5px; border-radius: 50%; background: var(--dim); flex-shrink: 0; }
+
+        .rounds-left { display: flex; flex-direction: column; justify-content: center; padding-left: 80px; border-right: 1px solid var(--border); }
+        .rounds-left h2 {
+          font-family: var(--font-ethnocentric), 'Playfair Display', serif;
+          font-size: clamp(3rem, 5vw, 5rem);
+          line-height: 1;
+          font-weight: normal;
+          padding-top: 50px;
+        }
+        .rounds-right { display: flex; flex-direction: column; justify-content: center; padding: 0 80px; }
+
+        @media (max-width: 768px) {
+          .rounds-right { padding: 0 24px; }
+        }
 
         .timeline-section { width: 100%; padding: 120px 0; border-top: 1px solid var(--border); }
         .timeline-header { padding: 0 80px; margin-bottom: 60px; }
@@ -646,7 +711,6 @@ export default function NexathonPage() {
             gap: 40px;
             align-items: flex-start !important;
           }
-          /* Vertical track line: centered on the 40px node (left: 20px = node center) */
           .tl-track::before {
             left: 20px;
             top: 0;
@@ -654,7 +718,6 @@ export default function NexathonPage() {
             width: 1px;
             height: 100%;
           }
-          /* Vertical progress line: same center (20px), grows downward via height */
           .tl-progress-line {
             left: 20px !important;
             top: 20px !important;
@@ -669,7 +732,6 @@ export default function NexathonPage() {
         .tl-track { display: flex; width: 100%; position: relative; justify-content: space-between; }
         .tl-track::before { content: ''; position: absolute; top: 20px; left: 0; right: 0; height: 1px; background: var(--border-strong); z-index: 0; }
 
-        /* Desktop progress line — starts at center of first node (20px = half of 40px node) */
         .tl-progress-line {
           position: absolute;
           top: 20px;
@@ -681,8 +743,33 @@ export default function NexathonPage() {
           z-index: 1;
         }
 
-        .tl-item { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2; }
-        .tl-node { width: 40px; height: 40px; border: 1px solid var(--border-strong); background: var(--bg); border-radius: 50%; margin-bottom: 24px; transition: all 0.4s ease; }
+        .tl-item {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          position: relative;
+          z-index: 2;
+          cursor: pointer;
+        }
+
+        .tl-node {
+          width: 40px;
+          height: 40px;
+          border: 1px solid var(--border-strong);
+          background: var(--bg);
+          border-radius: 50%;
+          margin-bottom: 24px;
+          transition: all 0.4s ease;
+        }
+
+        .tl-item:hover .tl-node,
+        .tl-item:focus .tl-node {
+          background: rgba(255,255,255,0.08);
+          border-color: rgba(255,255,255,0.4);
+          box-shadow: 0 0 12px rgba(255,255,255,0.2);
+        }
+
         .tl-label { font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); transition: 0.3s; }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 100px 0 80px; }
@@ -691,7 +778,14 @@ export default function NexathonPage() {
           .container { padding: 0 24px; }
         }
 
-        .section-heading-large { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 5.5rem); font-weight: 700; line-height: 1.1; color: var(--text); }
+        .section-heading-large {
+          font-family: var(--font-ethnocentric), 'Playfair Display', serif;
+          font-size: clamp(2rem, 5vw, 4.5rem);
+          font-weight: normal;
+          line-height: 1.1;
+          color: var(--text);
+        }
+
         .lb-card { position: relative; border: 1px solid var(--border); background: var(--surface); padding: 100px 80px; overflow: hidden; margin-bottom: 150px; }
 
         @media (max-width: 850px) {
@@ -702,16 +796,20 @@ export default function NexathonPage() {
 
         .lb-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Playfair Display', serif; font-size: 5rem; font-weight: 900; color: rgba(255,255,255,0.03); white-space: nowrap; pointer-events: none; z-index: 0; letter-spacing: 0.1em; }
         .lb-content { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: center; }
-        .lb-title { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; line-height: 1.1; }
+        .lb-title {
+          font-family: var(--font-ethnocentric), 'Playfair Display', serif;
+          font-size: clamp(1.6rem, 3vw, 3rem);
+          font-weight: normal;
+          line-height: 1.1;
+        }
         .lb-btn { display: inline-block; border: 1px solid var(--border-strong); padding: 20px 50px; color: var(--dim); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.1em; cursor: not-allowed; }
 
         .fade-up { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
         .fade-up.visible { opacity: 1; transform: translateY(0); }
       `}</style>
 
-      <div className="toast" id="toast" ref={toastRef}>
-        Registration is not open yet
-      </div>
+      <div className={ethnocentric.variable}>
+      <div className="toast" id="toast" ref={toastRef}></div>
 
       <div className="nexathon-nav">
         <ul className="nav-links">
@@ -748,11 +846,16 @@ export default function NexathonPage() {
                   <div>
                     <div className="hero-stat-label">Rounds</div>
                     <div className="hero-stat-val">3</div>
-                    </div>
+                  </div>
                 </div>
-                <button className="register-btn" onClick={handleRegisterClick}>
-                  <span>Register Here</span>
-                </button>
+                <a
+                  className="register-btn"
+                  href="https://discord.gg/D5Wkz9ZWs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span>Join The Community</span>
+                </a>
               </div>
             </div>
           </div>
@@ -777,7 +880,7 @@ export default function NexathonPage() {
                   <li className="reveal-item">
                     <h4>Pure Logic</h4>
                     <p>
-                      Rankings based on code quality and execution speed — not presentation or
+                      Rankings based on code quality and execution speed, not presentation or
                       polished demos.
                     </p>
                   </li>
@@ -805,9 +908,9 @@ export default function NexathonPage() {
                 <div className="round-content-wrapper" id="content-1">
                   <p className="round-subtitle">Where speed meets precision.</p>
                   <ul className="round-list">
-                    <li><span className="round-bullet"></span>Crack problems, optimise solutions, climb fast</li>
-                    <li><span className="round-bullet"></span>Real-time rankings updated as you submit</li>
-                    <li><span className="round-bullet"></span>Automated judge. No bias, no grey areas</li>
+                    <li><span className="round-bullet"></span>Online, time-limited coding test to assess problem-solving and algorithm skills</li>
+                    <li><span className="round-bullet"></span>Open nationwide online, so competition is high and standardized</li>
+                    <li><span className="round-bullet"></span>First screening round that filters out candidates who can't perform under time and computational pressure</li>
                   </ul>
                 </div>
               </div>
@@ -816,20 +919,20 @@ export default function NexathonPage() {
                 <div className="round-content-wrapper" id="content-2">
                   <p className="round-subtitle">Thinking is everything.</p>
                   <ul className="round-list">
-                    <li><span className="round-bullet"></span>Problem-solving approach under scrutiny</li>
-                    <li><span className="round-bullet"></span>Deep technical understanding assessed</li>
-                    <li><span className="round-bullet"></span>Think out loud. Defend your decisions</li>
+                    <li><span className="round-bullet"></span>Four parallel tracks: encryption, backend, frontend, and data analysis</li>
+                    <li><span className="round-bullet"></span>Simultaneous evaluation, requiring teams to work across multiple domains</li>
+                    <li><span className="round-bullet"></span>Focus on versatility: teams must show breadth of skills, not just depth in one area</li>
                   </ul>
                 </div>
               </div>
               <div className="round-card-pinned" id="card-3">
-                <h3 className="round-title">OSS Sprint</h3>
+                <h3 className="round-title">OS Sprint</h3>
                 <div className="round-content-wrapper" id="content-3">
                   <p className="round-subtitle">From ideas to real impact.</p>
                   <ul className="round-list">
-                    <li><span className="round-bullet"></span>Work on real open-source repositories</li>
-                    <li><span className="round-bullet"></span>Contributions measured by quality and volume</li>
-                    <li><span className="round-bullet"></span>Build, collaborate, ship. For the real world</li>
+                    <li><span className="round-bullet"></span>In-person, live development: teams build solutions on the spot, not pre-prepared</li>
+                    <li><span className="round-bullet"></span>Under direct observation: sponsors and evaluators watch the process in real time</li>
+                    <li><span className="round-bullet"></span>High-pressure execution: no time for polish or retries, performance is judged as it happens</li>
                   </ul>
                 </div>
               </div>
@@ -846,23 +949,48 @@ export default function NexathonPage() {
           <div className="tl-container">
             <div className="tl-track">
               <div className="tl-progress-line"></div>
-              <div className="tl-item" id="node-reg">
+              <div
+                className="tl-item"
+                id="node-reg"
+                onClick={() => handleNodeInteraction('19 April 2026: Registration')}
+                onMouseEnter={() => handleNodeInteraction('19 April 2026: Registration')}
+              >
                 <div className="tl-node"></div>
                 <div className="tl-label">Registration</div>
               </div>
-              <div className="tl-item" id="node-r1">
+              <div
+                className="tl-item"
+                id="node-r1"
+                onClick={() => handleNodeInteraction('25 April 2026: Round 1')}
+                onMouseEnter={() => handleNodeInteraction('25 April 2026: Round 1')}
+              >
                 <div className="tl-node"></div>
                 <div className="tl-label">Round 1</div>
               </div>
-              <div className="tl-item" id="node-r2">
+              <div
+                className="tl-item"
+                id="node-r2"
+                onClick={() => handleNodeInteraction('26 April 2026: Round 2')}
+                onMouseEnter={() => handleNodeInteraction('26 April 2026: Round 2')}
+              >
                 <div className="tl-node"></div>
                 <div className="tl-label">Round 2</div>
               </div>
-              <div className="tl-item" id="node-r3">
+              <div
+                className="tl-item"
+                id="node-r3"
+                onClick={() => handleNodeInteraction('9 May 2026: Round 3')}
+                onMouseEnter={() => handleNodeInteraction('9 May 2026: Round 3')}
+              >
                 <div className="tl-node"></div>
                 <div className="tl-label">Round 3</div>
               </div>
-              <div className="tl-item" id="node-eval">
+              <div
+                className="tl-item"
+                id="node-eval"
+                onClick={() => handleNodeInteraction('Round 4: Will Be Revealed Soon')}
+                onMouseEnter={() => handleNodeInteraction('Round 4: Will Be Revealed Soon')}
+              >
                 <div className="tl-node"></div>
                 <div className="tl-label">Evaluation</div>
               </div>
@@ -907,6 +1035,7 @@ export default function NexathonPage() {
           </section>
         </div>
       </main>
+      </div>
     </>
   );
 }

@@ -48,7 +48,7 @@ export default function SpaceShuttleScene() {
       
       <Suspense fallback={<Loader />}>
         {/* ScrollControls dictates how many 'pages' of scroll we have. */}
-        <ScrollControls pages={4} damping={0.25}>
+        <ScrollControls pages={5} damping={0.25}>
           <SpaceShuttleModel />
           <NexathonOverlay />
         </ScrollControls>

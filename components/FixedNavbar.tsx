@@ -6,17 +6,15 @@ export default function FixedNavbar({ isNavOpen }: { isNavOpen?: boolean }) {
   const [globalNavOpen, setGlobalNavOpen] = useState(false);
   const [active, setActive] = useState(0);
   const [navOpacity, setNavOpacity] = useState(1);
-  const [mobileHidden, setMobileHidden] = useState(false);
   const scrollElRef = useRef<HTMLElement | null>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const magnetOffsets = useRef<{ x: number; y: number }[]>([0, 0, 0, 0].map(() => ({ x: 0, y: 0 })));
-  const [, forceUpdate] = useState(0);
 
   const navItems = [
     { label: 'MISSION', page: 0 },
     { label: 'SPONSORS', page: 1 }, 
     { label: 'ARCHIVES', page: 2 },
     { label: 'CREW', page: 3 }, 
+    { label: 'CREDITS', page: 4 }, 
   ];
 
   useEffect(() => {
@@ -93,6 +91,7 @@ export default function FixedNavbar({ isNavOpen }: { isNavOpen?: boolean }) {
 
   return (
     <>
+      {/* DESKTOP NAV */}
       <nav style={{
         position: 'fixed', left: '1.2rem', top: '50%',
         transform: 'translateY(-50%)', zIndex: 9999,
@@ -115,6 +114,7 @@ export default function FixedNavbar({ isNavOpen }: { isNavOpen?: boolean }) {
               background: 'none', border: 'none', cursor: 'pointer',
               transition: 'color 0.3s ease',
               padding: '0.25rem',
+              pointerEvents: 'auto'
             }}
           >{label}</button>
         ))}
@@ -124,11 +124,13 @@ export default function FixedNavbar({ isNavOpen }: { isNavOpen?: boolean }) {
               width: '2px', height: active === page ? '20px' : '6px',
               borderRadius: '2px', background: active === page ? '#fff' : 'rgba(255,255,255,0.2)',
               transition: 'all 0.3s ease', cursor: 'pointer',
+              pointerEvents: 'auto'
             }} />
           ))}
         </div>
       </nav>
 
+      {/* MOBILE NAV */}
       <nav style={{
         position: 'fixed', bottom: '1.5rem', left: '50%',
         transform: 'translateX(-50%)', zIndex: 9999,
@@ -136,6 +138,7 @@ export default function FixedNavbar({ isNavOpen }: { isNavOpen?: boolean }) {
         borderRadius: '100px', padding: '0.4rem',
         opacity: (isNavOpen || globalNavOpen) ? 0 : navOpacity,
         transition: 'all 0.4s ease',
+        pointerEvents: (isNavOpen || globalNavOpen) ? 'none' : 'auto', // Correctly handle interaction
       }} className="flex md:hidden">
         {navItems.map(({ label, page }) => (
           <button key={label} onClick={() => scrollToSection(page)} style={{
@@ -143,6 +146,8 @@ export default function FixedNavbar({ isNavOpen }: { isNavOpen?: boolean }) {
             fontFamily: '"DM Mono", monospace', fontSize: '8px',
             background: active === page ? '#fff' : 'transparent',
             border: 'none', padding: '0.5rem 0.85rem', borderRadius: '100px',
+            cursor: 'pointer',
+            pointerEvents: 'auto'
           }}>{label}</button>
         ))}
       </nav>

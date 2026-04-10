@@ -203,7 +203,7 @@ export default function ParallaxScene() {
             <motion.h1
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ delay: 0.1, duration: 0.8}}
               className={`${infiniteBeyond.className} text-white text-5xl md:text-8xl font-normal tracking-normal lowercase mb-12`}
             >
               Nexathon
@@ -340,7 +340,7 @@ export default function ParallaxScene() {
             <h1 className={`${infiniteBeyond.className} text-white text-5xl sm:text-5xl md:text-7xl font-normal lowercase tracking-normal text-center selection:bg-red-600 selection:text-white pointer-events-auto`}>
               Nexathon
             </h1>
-            <p className="mt-4 text-gray-500 font-mono text-sm tracking-[0.3em] pointer-events-auto selection:bg-red-600">
+            <p className="mt-4 text-white-500 font-mono text-sm tracking-[0.3em] pointer-events-auto selection:bg-red-600">
               --THERE IS NO NEUTRAL--
             </p>
 
