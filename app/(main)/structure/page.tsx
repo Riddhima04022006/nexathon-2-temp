@@ -107,6 +107,8 @@ export default function NexathonPage() {
           .to('.content-reveal', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.95)
           .to('.reveal-item', { opacity: 1, y: 0, stagger: 0.15, duration: 0.4, ease: 'sine.out' }, 1.1);
 
+        gsap.set('.round-content-wrapper', { height: 0, opacity: 0 });
+
         const roundsTL = gsap.timeline({
           scrollTrigger: {
             trigger: '.rounds-outer',
@@ -118,21 +120,23 @@ export default function NexathonPage() {
           },
         });
 
-        gsap.set('#card-1', { className: 'round-card-pinned active' });
-        gsap.set('#content-1', { height: 'auto', opacity: 1 });
-
         roundsTL
-          .to({}, { duration: 0.6 })
+          .to('#content-1', { height: 'auto', opacity: 1, duration: 0.1 })
+          .set('#card-1', { className: 'round-card-pinned active' }, '<')
+          
+          .to({}, { duration: 0.6 }) 
           .to('#content-1', { height: 0, opacity: 0, duration: 0.6 })
-          .to('#card-1', { className: 'round-card-pinned', duration: 0.1 }, '<')
-          .to('#card-2', { className: 'round-card-pinned active', duration: 0.1 }, '<')
+          .set('#card-1', { className: 'round-card-pinned' }, '<')
+          .set('#card-2', { className: 'round-card-pinned active' }, '<')
           .to('#content-2', { height: 'auto', opacity: 1, duration: 0.6 }, '<')
-          .to({}, { duration: 0.6 })
+          
+          .to({}, { duration: 0.6 }) 
           .to('#content-2', { height: 0, opacity: 0, duration: 0.6 })
-          .to('#card-2', { className: 'round-card-pinned', duration: 0.1 }, '<')
-          .to('#card-3', { className: 'round-card-pinned active', duration: 0.1 }, '<')
-          .to('#content-3', { height: 'auto', opacity: 1, duration: 0.6 }, '<');
-
+          .set('#card-2', { className: 'round-card-pinned' }, '<')
+          .set('#card-3', { className: 'round-card-pinned active' }, '<')
+          .to('#content-3', { height: 'auto', opacity: 1, duration: 0.6 }, '<')
+          
+          .to({}, { duration: 0.6 }); 
         const timelineTL = gsap.timeline({
           scrollTrigger: {
             trigger: '#timeline',
