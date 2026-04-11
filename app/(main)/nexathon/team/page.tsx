@@ -46,6 +46,7 @@ const teamMembers: TeamMember[] = [
   { id: 6, name: "Riddhima", role: "Web Dev and Panelist", description: "Riddhima crafts immersive and user-friendly digital experiences that balance aesthetics with technical performance. At Nexathon, she is not only in charge of the brand's site, but also serves as a member of the panelist team where she designs tricky coding challenges that judge developers in their ability to solve real-world problems.", image: Riddhima, linkedin: "https://www.linkedin.com/in/riddhimacodes/", github:"https://github.com/Riddhima04022006" },
   { id: 7, name: "Sipra", role: "Brand Designer", description: "Sipra is a multidisciplinary designer dedicated to building visual identities that leave a lasting mark. At Nexathon, she is the Visual Design Lead, overseeing the brand's creative presence across multiple platforms. \"Design is not just about a certain look, but about conveying meaningful ideas that resonate with the target audience.\"", image: Sipra, linkedin: "https://www.linkedin.com/in/sipra-sonam" },
   { id: 8, name: "Bhuwan", role: "Panelist", description: "Bhuwan Chugh is a full-stack developer and AIML student who builds websites blending practical problem-solving with creative inspiration from movies and anime. As a Nexathon panelist, he contributed to designing hack challenges, shaping the event’s flow, structuring rounds, and developing key website assets for the hackathon.", image: Bhuwan, linkedin: "https://www.linkedin.com/in/bhuwan-chugh/", github: " https://github.com/Bhuwan-007" },
+  { id: 9, name: "Prakhar", role: "Panelist", description: "Prakhar approaches question-setting with a strong emphasis on difficulty calibration and conceptual rigor. He is attentive to how problems scale across rounds, ensuring a consistent progression in challenge. His goal is to create questions that reward structured thinking and penalize shortcuts.", image: Prakhar },
   { id: 10, name: "Moksh", role: "Panelist", description: "With a methodical approach to problem design, Moksh focuses on building questions that test depth over surface-level knowledge. He prioritizes clarity, edge cases, and real-world relevance, ensuring each round filters for actual engineering ability rather than guesswork. His work reflects a bias toward precision and fairness in evaluation.", image: Moksh,linkedin: "https://www.linkedin.com/in/mokshhh/" },
   { id: 11, name: "Habeeb", role: "Outreach Specialist", description: "Habeeb handles outreach with a focus on building meaningful connections rather than transactional reach. He works on identifying the right partners and audiences, ensuring alignment with Nexathon’s intent. His approach is direct, strategic, and centered on long-term value.", image: Habeeb, linkedin: "https://www.linkedin.com/in/habeeb-md-faiz/" },
   { id: 12, name: "Vikram", role: "Tech Specialist", description: "Vikram oversees the technical backbone of Nexathon, ensuring systems are reliable, scalable, and efficient under pressure. He focuses on execution without friction, anticipating failure points before they surface. His role is defined by stability, speed, and technical precision.", image: Vikram },
@@ -86,6 +87,7 @@ export default function TeamPage() {
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
       
+      {/* Background Section */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <Image src={backgroundImage} alt="Background" fill className="object-cover opacity-100" priority />
         <div className="absolute inset-0 bg-gradient-to-b from-black/95 via-black/40 to-transparent" />
@@ -93,7 +95,7 @@ export default function TeamPage() {
 
       <div className="relative z-30 w-full max-w-[1300px] h-full flex flex-col lg:flex-row px-6 lg:px-16">      
         
-        {/* Left Sidebar - Kept mobile layout until lg (1024px) */}
+        {/* Left Sidebar */}
         <div className="w-full lg:w-[150px] flex flex-col items-start pt-10 lg:py-24 h-auto lg:h-[90vh] z-50">
           <h1 className="text-[10px] lg:text-[11px] font-serif font-bold tracking-[0.4em] text-white/70 uppercase mb-5 lg:mb-10 pl-10 lg:pl-0 whitespace-nowrap">CAST AND CREW</h1>
           <div className="flex flex-row lg:flex-col items-center gap-2 h-full w-full relative z-[100]">
@@ -114,20 +116,19 @@ export default function TeamPage() {
         </div>
 
         {/* Main Content Area */}
-        <div className="flex-1 relative flex flex-col items-center lg:flex-row lg:items-center justify-center lg:justify-start lg:pl-10 h-full pt-[30px] lg:pt-0">          
-          
-          {/* Desktop Image - Hidden below 1024px */}
-          <div className="hidden lg:block absolute inset-0 flex items-center justify-end pr-12 z-10 pointer-events-none">
+        <div className="flex-1 relative flex flex-col items-center md:flex-row lg:items-center justify-center md:justify-start lg:pl-10 h-full pt-[30px] md:pt-0">          
+          {/* Main Portrait Image (Desktop) */}
+          <div className="hidden md:block lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-end lg:pr-12 z-10 pointer-events-none">
             <AnimatePresence mode="wait">
               <motion.div key={activeId} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.7 }} 
-                className="relative lg:w-[420px] lg:h-[520px] xl:w-[500px] xl:h-[650px] lg:translate-x-12">
+                className="relative md:w-[320px] md:h-[450px] lg:w-[420px] lg:h-[520px] xl:w-[500px] xl:h-[650px] lg:translate-x-12">
                 <Image src={activeMember.image} alt={activeMember.name} fill className="object-contain" priority />
               </motion.div>
             </AnimatePresence>
           </div>
 
-          {/* Mobile Image - Visible below 1024px */}
-          <div className="flex lg:hidden justify-center w-full z-10 pt-2">
+          {/* Mobile Image - Shifted Up with pt-2 */}
+          <div className="flex md:hidden justify-center w-full z-10 pt-2">
             <AnimatePresence mode="wait">
               <motion.div key={activeId} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} 
                 className="relative w-[230px] h-[250px]">
@@ -136,27 +137,27 @@ export default function TeamPage() {
             </AnimatePresence>
           </div>
 
-          {/* Text Content - Mobile style applied until 1024px (lg) */}
-          <div className="relative z-20 w-full h-full flex flex-col items-center justify-end pb-44 lg:items-start lg:pl-0 lg:justify-end lg:pb-16 xl:pb-24">
+          {/* Text Content - Shifted up on Mobile via pb-44 */}
+          <div className="relative z-20 w-full h-full flex flex-col items-center justify-end pb-44 md:items-start md:pl-8 md:justify-center lg:pl-0 lg:justify-end lg:pb-16 xl:pb-24">
             <AnimatePresence mode="wait">
-              <motion.div key={activeId} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.6, delay: 0.2 }} className="max-w-xl text-center lg:text-left drop-shadow-2xl px-2">
+              <motion.div key={activeId} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.6, delay: 0.2 }} className="max-w-xl text-center md:text-left drop-shadow-2xl px-2">
                 
-                <h2 className={`${ethnocentric.className} text-2xl lg:text-4xl xl:text-5xl font-bold text-white mb-1 lg:mb-2 uppercase tracking-tight`}>
+                <h2 className={`${ethnocentric.className} text-2xl md:text-4xl lg:text-4xl xl:text-5xl font-bold text-white mb-1 md:mb-2 uppercase tracking-tight`}>
                   <span className="relative">{activeMember.name}</span>
                 </h2>
                 
-                <div className="flex items-center justify-center lg:justify-start gap-3 mb-2 lg:mb-6">
-                  <div className="hidden lg:block h-[1px] w-10 bg-cyan-500" />
-                  <span className="relative text-[10px] lg:text-[12px] font-mono text-cyan-400 tracking-[0.3em] uppercase font-bold">
+                <div className="flex items-center justify-center md:justify-start gap-3 mb-2 md:mb-3 lg:mb-6">
+                  <div className="hidden md:block h-[1px] w-8 lg:w-10 bg-cyan-500" />
+                  <span className="relative text-[10px] md:text-xs lg:text-[12px] font-mono text-cyan-400 tracking-[0.3em] uppercase font-bold">
                     {activeMember.role}
                   </span>
                 </div>
 
-                <p className={`${dmMono.className} text-[10px] lg:text-[14px] xl:text-[15px] text-zinc-400 bg-black/40 backdrop-blur-md rounded-xl px-4 py-2 lg:px-8 lg:py-5 text-center lg:text-left w-full lg:max-w-[500px] xl:max-w-[600px] leading-relaxed border border-white/5`}>
+                <p className={`${dmMono.className} text-[10px] md:text-[13px] lg:text-[14px] xl:text-[15px] text-zinc-400 bg-black/40 backdrop-blur-md rounded-xl px-4 py-2 md:px-5 md:py-3 lg:px-8 lg:py-5 text-center md:text-left w-full lg:max-w-[500px] xl:max-w-[600px] leading-relaxed border border-white/5`}>
                   {activeMember.description}
                 </p>
 
-                <div className="flex items-center justify-center lg:justify-start gap-6 mt-4 lg:mt-6 relative w-full left-0 lg:left-2">
+                <div className="flex items-center justify-center md:justify-start gap-6 mt-4 md:mt-6 relative w-full left-0 md:left-2">
                   {activeMember.linkedin && (
                     <a href={activeMember.linkedin} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-cyan-400 transition-all">
                       <Linkedin size={18} className="lg:w-5 lg:h-5" />
