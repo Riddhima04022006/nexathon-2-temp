@@ -998,7 +998,7 @@ export default function NexathonPage() {
                 <div className="round-content-wrapper" id="content-2">
                   <p className="round-subtitle">Thinking is everything.</p>
                   <ul className="round-list">
-                    <li><span className="round-bullet"></span>Four parallel tracks: encryption, backend, frontend, and data analysis</li>
+                    <li><span className="round-bullet"></span>Five parallel tracks: encryption, backend, frontend, AI, and fifth will be revealed soon</li>
                     <li><span className="round-bullet"></span>Simultaneous evaluation, requiring teams to work across multiple domains</li>
                     <li><span className="round-bullet"></span>Focus on versatility: teams must show breadth of skills, not just depth in one area</li>
                   </ul>
