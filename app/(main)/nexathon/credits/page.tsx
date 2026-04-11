@@ -53,8 +53,6 @@ const CreditsPage: React.FC = () => {
           opacity: 0;
           z-index: 10;
         }
-
-        /* Mobile & Desktop highlight fix */
         .model-card {
           transition: all 0.3s ease;
           -webkit-tap-highlight-color: transparent;
