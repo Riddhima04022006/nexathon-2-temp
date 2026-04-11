@@ -20,7 +20,7 @@ export default function NexathonSponsor() {
     };
   }, []);
 
-  const calendlyUrl = "https://calendly.com/medhavee-singh007/30min";
+  const calendlyUrl = "https://calendly.com/harshitharsh49/30min";
 
   return (
     <>
