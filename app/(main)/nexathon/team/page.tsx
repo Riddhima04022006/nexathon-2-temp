@@ -13,7 +13,7 @@ const ethnocentric = localFont({
   variable: "--font-ethnocentric",
 });
 
-// Assets
+// Assets (Keep your existing imports)
 import backgroundImage from "../assets/bg.jpeg";
 import Harshit from "../assets/Harshit_Blue.png";
 import Prakul from "../assets/Prakul_Blue.png";
@@ -87,7 +87,6 @@ export default function TeamPage() {
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
       
-      {/* Background Section */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <Image src={backgroundImage} alt="Background" fill className="object-cover opacity-100" priority />
         <div className="absolute inset-0 bg-gradient-to-b from-black/95 via-black/40 to-transparent" />
@@ -116,19 +115,20 @@ export default function TeamPage() {
         </div>
 
         {/* Main Content Area */}
-        <div className="flex-1 relative flex flex-col items-center md:flex-row lg:items-center justify-center md:justify-start lg:pl-10 h-full pt-[30px] md:pt-0">          
-          {/* Main Portrait Image (Desktop) */}
-          <div className="hidden md:block lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-end lg:pr-12 z-10 pointer-events-none">
+        <div className="flex-1 relative flex flex-col items-center lg:flex-row lg:items-center justify-center lg:justify-start lg:pl-10 h-full pt-[30px] lg:pt-0">          
+          
+          {/* Main Portrait Image (Desktop Only - 1024px+) */}
+          <div className="hidden lg:flex absolute inset-0 items-center justify-end pr-12 z-10 pointer-events-none">
             <AnimatePresence mode="wait">
               <motion.div key={activeId} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.7 }} 
-                className="relative md:w-[320px] md:h-[450px] lg:w-[420px] lg:h-[520px] xl:w-[500px] xl:h-[650px] lg:translate-x-12">
+                className="relative lg:w-[420px] lg:h-[520px] xl:w-[500px] xl:h-[650px] lg:translate-x-12">
                 <Image src={activeMember.image} alt={activeMember.name} fill className="object-contain" priority />
               </motion.div>
             </AnimatePresence>
           </div>
 
-          {/* Mobile Image - Shifted Up with pt-2 */}
-          <div className="flex md:hidden justify-center w-full z-10 pt-2">
+          {/* Mobile Image (Visible on all screens < 1024px) */}
+          <div className="flex lg:hidden justify-center w-full z-10 pt-2">
             <AnimatePresence mode="wait">
               <motion.div key={activeId} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} 
                 className="relative w-[230px] h-[250px]">
@@ -137,27 +137,27 @@ export default function TeamPage() {
             </AnimatePresence>
           </div>
 
-          {/* Text Content - Shifted up on Mobile via pb-44 */}
-          <div className="relative z-20 w-full h-full flex flex-col items-center justify-end pb-44 md:items-start md:pl-8 md:justify-center lg:pl-0 lg:justify-end lg:pb-16 xl:pb-24">
+          {/* Text Content - Responsive logic fixed */}
+          <div className="relative z-20 w-full h-full flex flex-col items-center justify-end pb-44 lg:items-start lg:justify-end lg:pb-16 xl:pb-24 lg:pl-0">
             <AnimatePresence mode="wait">
-              <motion.div key={activeId} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.6, delay: 0.2 }} className="max-w-xl text-center md:text-left drop-shadow-2xl px-2">
+              <motion.div key={activeId} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.6, delay: 0.2 }} className="max-w-xl text-center lg:text-left drop-shadow-2xl px-2">
                 
-                <h2 className={`${ethnocentric.className} text-2xl md:text-4xl lg:text-4xl xl:text-5xl font-bold text-white mb-1 md:mb-2 uppercase tracking-tight`}>
+                <h2 className={`${ethnocentric.className} text-2xl lg:text-4xl xl:text-5xl font-bold text-white mb-1 lg:mb-2 uppercase tracking-tight`}>
                   <span className="relative">{activeMember.name}</span>
                 </h2>
                 
-                <div className="flex items-center justify-center md:justify-start gap-3 mb-2 md:mb-3 lg:mb-6">
-                  <div className="hidden md:block h-[1px] w-8 lg:w-10 bg-cyan-500" />
-                  <span className="relative text-[10px] md:text-xs lg:text-[12px] font-mono text-cyan-400 tracking-[0.3em] uppercase font-bold">
+                <div className="flex items-center justify-center lg:justify-start gap-3 mb-2 lg:mb-6">
+                  <div className="hidden lg:block h-[1px] w-8 lg:w-10 bg-cyan-500" />
+                  <span className="relative text-[10px] lg:text-[12px] font-mono text-cyan-400 tracking-[0.3em] uppercase font-bold">
                     {activeMember.role}
                   </span>
                 </div>
 
-                <p className={`${dmMono.className} text-[10px] md:text-[13px] lg:text-[14px] xl:text-[15px] text-zinc-400 bg-black/40 backdrop-blur-md rounded-xl px-4 py-2 md:px-5 md:py-3 lg:px-8 lg:py-5 text-center md:text-left w-full lg:max-w-[500px] xl:max-w-[600px] leading-relaxed border border-white/5`}>
+                <p className={`${dmMono.className} text-[10px] lg:text-[14px] xl:text-[15px] text-zinc-400 bg-black/40 backdrop-blur-md rounded-xl px-4 py-2 lg:px-8 lg:py-5 text-center lg:text-left w-full lg:max-w-[500px] xl:max-w-[600px] leading-relaxed border border-white/5`}>
                   {activeMember.description}
                 </p>
 
-                <div className="flex items-center justify-center md:justify-start gap-6 mt-4 md:mt-6 relative w-full left-0 md:left-2">
+                <div className="flex items-center justify-center lg:justify-start gap-6 mt-4 lg:mt-6 relative w-full left-0 lg:left-2">
                   {activeMember.linkedin && (
                     <a href={activeMember.linkedin} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-cyan-400 transition-all">
                       <Linkedin size={18} className="lg:w-5 lg:h-5" />
