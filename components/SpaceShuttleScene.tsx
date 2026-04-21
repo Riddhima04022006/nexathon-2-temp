@@ -5,7 +5,7 @@ import { Canvas } from '@react-three/fiber';
 import { ScrollControls, Html, useProgress, Stars } from '@react-three/drei';
 import SpaceShuttleModel from './SpaceShuttleModel';
 import NexathonOverlay from './NexathonOverlay';
-import { syne } from '../app/layout';
+import { syne } from '@/lib/fonts';
 
 
 function Loader() {

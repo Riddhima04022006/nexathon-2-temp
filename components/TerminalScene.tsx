@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from 'react';
-import { syne } from '../app/layout';
+import { syne } from '@/lib/fonts';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 

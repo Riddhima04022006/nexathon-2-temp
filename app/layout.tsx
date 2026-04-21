@@ -1,43 +1,31 @@
-import { Syne, Mulish, Bebas_Neue, DM_Mono } from 'next/font/google';
+import type { Metadata, Viewport } from 'next';
+import { bebas, dmMono, infiniteBeyond } from '@/lib/fonts';
 import CustomCursor from '@/components/CustomCursor';
-import localFont from 'next/font/local';
-import type { Viewport, Metadata } from 'next';
-
 import './globals.css';
 
-export const mulish = Mulish({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-mulish',
-});
-
-export const syne = Syne({
-  subsets: ['latin'],
-  weight: ['400', '700', '800'],
-  display: 'swap',
-  variable: '--font-syne',
-});
-
-export const orbitronio = localFont({
-  src: './fonts/Orbitronio.ttf',
-  variable: '--font-orbitronio',
-  display: 'swap',
-});
-
-export const infiniteBeyond = localFont({
-  src: './fonts/Ethnocentric-Regular.otf',
-  variable: '--font-infinite-beyond',
-  display: 'swap',
-});
-
-export const bebas = Bebas_Neue({ weight: '400', subsets: ['latin'], variable: '--font-bebas' });
-export const dmMono = DM_Mono({ weight: '400', subsets: ['latin'], variable: '--font-dm-mono' });
-
 export const metadata: Metadata = {
-  title: "Nexathon v2.0",
-  description: "Official platform for Nexathon v2.0",
-  icons: {
-    icon: "/favicon.ico",
+  title: {
+    default: 'Nexathon V2',
+    template: '%s | Nexathon V2',
+  },
+  description: 'Official sit of Nexathon V2.',
+  metadataBase: new URL('https://nexathonv2.in'),
+  openGraph: {
+    title: 'Nexathon V2',
+    description: 'Official sit of Nexathon V2.',
+    url: 'https://nexathonv2.in',
+    siteName: 'Nexathon V2',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Nexathon V2',
+    description: 'Official sit of Nexathon V2.',
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -52,7 +40,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body
-        className={`bg-black text-white ${bebas.variable} ${dmMono.variable} ${infiniteBeyond.variable} ${mulish.variable} ${syne.variable} ${orbitronio.variable} cursor-none`}
+        style={{ cursor: 'none' }}
+        className={`bg-black text-white ${bebas.variable} ${dmMono.variable} ${infiniteBeyond.variable} cursor-none`}
       >
         <CustomCursor />
         {children}

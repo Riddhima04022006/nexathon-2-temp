@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
-import { infiniteBeyond } from '../app/layout';
+import { infiniteBeyond } from '@/lib/fonts';
 import { Audiowide } from 'next/font/google';
 
 const audiowide = Audiowide({

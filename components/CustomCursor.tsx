@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useMotionValue } from 'framer-motion';
 
 export default function CustomCursor() {
   const [isMobile, setIsMobile] = useState(false);
@@ -9,12 +9,7 @@ export default function CustomCursor() {
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
 
-  const springConfig = { damping: 25, stiffness: 700 };
-  const cursorXSpring = useSpring(cursorX, springConfig);
-  const cursorYSpring = useSpring(cursorY, springConfig);
-
   useEffect(() => {
-    // Hide on touch devices or narrow screens
     const checkMobile = () => {
       setIsMobile(
         window.matchMedia('(max-width: 768px)').matches ||
@@ -46,8 +41,8 @@ export default function CustomCursor() {
     <motion.div
       className="fixed top-0 left-0 w-2 h-2 bg-white rounded-full pointer-events-none z-[999999]"
       style={{
-        x: cursorXSpring,
-        y: cursorYSpring,
+        x: cursorX,
+        y: cursorY,
       }}
     />
   );
