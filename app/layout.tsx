@@ -52,7 +52,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body
-        style={{ cursor: 'none' }}
         className={`bg-black text-white ${bebas.variable} ${dmMono.variable} ${infiniteBeyond.variable} ${mulish.variable} ${syne.variable} ${orbitronio.variable} cursor-none`}
       >
         <CustomCursor />
