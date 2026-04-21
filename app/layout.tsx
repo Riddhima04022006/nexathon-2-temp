@@ -1,9 +1,7 @@
-import { Syne } from 'next/font/google';
-import { Mulish } from 'next/font/google';
-import { Bebas_Neue, DM_Mono } from 'next/font/google';
+import { Syne, Mulish, Bebas_Neue, DM_Mono } from 'next/font/google';
 import CustomCursor from '@/components/CustomCursor';
 import localFont from 'next/font/local';
-import type { Viewport } from 'next';
+import type { Viewport, Metadata } from 'next';
 
 import './globals.css';
 
@@ -17,6 +15,7 @@ export const syne = Syne({
   subsets: ['latin'],
   weight: ['400', '700', '800'],
   display: 'swap',
+  variable: '--font-syne',
 });
 
 export const orbitronio = localFont({
@@ -34,6 +33,14 @@ export const infiniteBeyond = localFont({
 export const bebas = Bebas_Neue({ weight: '400', subsets: ['latin'], variable: '--font-bebas' });
 export const dmMono = DM_Mono({ weight: '400', subsets: ['latin'], variable: '--font-dm-mono' });
 
+export const metadata: Metadata = {
+  title: "Nexathon v2.0",
+  description: "Official platform for Nexathon v2.0",
+  icons: {
+    icon: "/favicon.ico",
+  },
+};
+
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
@@ -46,7 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body
         style={{ cursor: 'none' }}
-        className={`bg-black text-white ${bebas.variable} ${dmMono.variable} ${infiniteBeyond.variable} cursor-none`}
+        className={`bg-black text-white ${bebas.variable} ${dmMono.variable} ${infiniteBeyond.variable} ${mulish.variable} ${syne.variable} ${orbitronio.variable} cursor-none`}
       >
         <CustomCursor />
         {children}

@@ -1,15 +1,20 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: "https://www.nexathonv2.in/",
-    },
-    {
-      url: "https://www.nexathonv2.in/about",
-    },
-    {
-      url: "https://www.nexathonv2.in/contact",
-    },
+  const baseUrl = "https://www.nexathonv2.in";
+  const routes = [
+    "",           
+    "/flashback",  
+    "/nexathon",    
+    "/side",       
+    "/sponsors",    
+    "/structure",   
   ];
+
+  return routes.map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: route === "" ? 1 : 0.8,
+  }));
 }
