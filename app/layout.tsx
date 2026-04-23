@@ -8,11 +8,11 @@ export const metadata: Metadata = {
     default: 'Nexathon V2',
     template: '%s | Nexathon V2',
   },
-  description: 'Official sit of Nexathon V2.',
+  description: 'Official site of Nexathon V2.',
   metadataBase: new URL('https://nexathonv2.in'),
   openGraph: {
     title: 'Nexathon V2',
-    description: 'Official sit of Nexathon V2.',
+    description: 'Official site of Nexathon V2.',
     url: 'https://nexathonv2.in',
     siteName: 'Nexathon V2',
     locale: 'en_US',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Nexathon V2',
-    description: 'Official sit of Nexathon V2.',
+    description: 'Official site of Nexathon V2.',
   },
   robots: {
     index: true,
