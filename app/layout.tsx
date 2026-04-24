@@ -5,14 +5,21 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Nexathon V2',
+    default: 'Nexathon V2 | The Premier Web3 & AI Hackathon',
     template: '%s | Nexathon V2',
   },
-  description: 'Official site of Nexathon V2.',
+  description: 'Join Nexathon V2, the ultimate destination for innovators. Build, compete, and scale your ideas in the next generation of technology.',
   metadataBase: new URL('https://nexathonv2.in'),
+  keywords: ['Nexathon V2', 'Nexathon', 'Hackathon', 'AI', 'Innovation', 'Coding Competition'],
+  authors: [{ name: 'Nexathon Team' }],
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
+  },
   openGraph: {
     title: 'Nexathon V2',
-    description: 'Official site of Nexathon V2.',
+    description: 'Join Nexathon V2, the ultimate destination for innovators. Build, compete, and scale your ideas in the next generation of technology.',
     url: 'https://nexathonv2.in',
     siteName: 'Nexathon V2',
     locale: 'en_US',
@@ -21,15 +28,24 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Nexathon V2',
-    description: 'Official site of Nexathon V2.',
+    description: 'Join Nexathon V2, the ultimate destination for innovators. Build, compete, and scale your ideas in the next generation of technology.',
+    creator: '@nexathon',
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
 
 export const viewport: Viewport = {
+  themeColor: '#000000',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
