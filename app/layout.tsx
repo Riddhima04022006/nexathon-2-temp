@@ -5,7 +5,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Nexathon V2 | The Premier Web3 & AI Hackathon',
+    default: 'Nexathon V2',
     template: '%s | Nexathon V2',
   },
   description: 'Join Nexathon V2, the ultimate destination for innovators. Build, compete, and scale your ideas in the next generation of technology.',
