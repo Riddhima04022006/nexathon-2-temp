@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     template: '%s | Nexathon V2',
   },
   description: 'Join Nexathon V2, the ultimate destination for innovators. Build, compete, and scale your ideas in the next generation of technology.',
-  metadataBase: new URL('https://nexathonv2.in'),
+  metadataBase: new URL('https://www.nexathonv2.in'),
   keywords: ['Nexathon V2', 'Nexathon', 'Hackathon', 'AI', 'Innovation', 'Coding Competition'],
   authors: [{ name: 'Nexathon Team' }],
   icons: {
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Nexathon V2',
     description: 'Join Nexathon V2, the ultimate destination for innovators. Build, compete, and scale your ideas in the next generation of technology.',
-    url: 'https://nexathonv2.in',
+    url: 'https://www.nexathonv2.in',
     siteName: 'Nexathon V2',
     locale: 'en_US',
     type: 'website',
